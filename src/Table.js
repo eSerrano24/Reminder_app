@@ -20,6 +20,9 @@ let TableHeader = () => {
       <tr>
         <th>Type</th>
         <th>Description</th>
+         
+        <th></th>
+        <th></th>
       </tr>
     </thead>
   );
@@ -29,8 +32,9 @@ let TableBody = props => {
   const rows = props.characterData.map((row, index) => {
     return (
       <tr key={index}>
-        <td>{row.name}</td>
-        <td>{row.job}</td>
+        <td>{row.type}</td>
+        <td>{row.description}</td>
+        <td>{new Date().toLocaleDateString('default', {month: 'long'})+'/'+new Date().getDate()+'/'+ new Date().getFullYear()}</td>
         <td>
           <button onClick={() => props.removeCharacter(index)}>Delete</button>
         </td>

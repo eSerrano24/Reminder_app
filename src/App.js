@@ -27,7 +27,7 @@ class App extends Component {
     return (
       <div className="container">
         <h3>Reminder</h3>
-        <p><i>Keep track, meet deadlines, succeed.</i></p>
+        <p><i>Keep track, pace yourself, succeed.</i></p>
         <Form handleSubmit={this.handleSubmit} />
         <Table
           characterData={characters}
