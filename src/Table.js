@@ -18,8 +18,8 @@ let TableHeader = () => {
   return (
     <thead>
       <tr>
-        <th>Name</th>
-        <th>Job</th>
+        <th>Type</th>
+        <th>Description</th>
       </tr>
     </thead>
   );
