@@ -21,25 +21,34 @@ class App extends Component {
   };
 
   handleSubmit = character => {
-    this.setState({ characters: [...this.state.characters, character] });
+    const value = [...this.state.characters, character];
+    this.setState({ characters: value });
+    this.setState({ filter: value});
+    this.setState({filterData: ''});
   };
 
   // filter method
   handleFilter = key => {
-    // const {filterData} = this.state;
-    // const filterData = key;
-   
     const {value} = key.target;
     this.setState({filterData: value}) // arr.filter the characters
+    const {characters} = this.state;
 
-    
-
+    if(value != '') {
+      this.setState({filter: characters.filter((item, i, arr) => {
+        // alert(item.type);
+        return (item.type == value);
+        })
+      })
+    } else {
+      this.setState({filter: characters});
+    }
   };
 
   render() {
-    const { characters, filterData } = this.state;
+    const { filterData, filter } = this.state;
 
     return (
+
       <div className="container">
         <h3>Reminder</h3>
         <Filter 
@@ -50,11 +59,10 @@ class App extends Component {
         <Form handleSubmit={this.handleSubmit} />
         <h4>Reminder wall</h4>
         <Table
-          characterData={characters}
+          characterData={filter}
           removeCharacter={this.removeCharacter}
         />
-
-        
+      
       </div>
     );
   }
