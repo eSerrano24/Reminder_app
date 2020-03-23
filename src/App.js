@@ -11,7 +11,7 @@ class App extends Component {
   };
 
   removeCharacter = index => {
-    const { characters, filter, filterData } = this.state;
+    const { characters } = this.state;
 
     this.setState({
       characters: characters.filter((character, i) => {
@@ -26,7 +26,14 @@ class App extends Component {
 
   // filter method
   handleFilter = key => {
-    // this.setState({filter: 0}) // arr.filter the characters
+    // const {filterData} = this.state;
+    // const filterData = key;
+   
+    const {value} = key.target;
+    this.setState({filterData: value}) // arr.filter the characters
+
+    
+
   };
 
   render() {

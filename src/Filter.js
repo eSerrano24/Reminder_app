@@ -11,7 +11,7 @@ const Filter = props => {
       name="filter"
       id="filter"
       value={filterData}
-      onChange={props.handleFilter({filterData})}
+      onChange={props.handleFilter}
     />
     </form>
     )
