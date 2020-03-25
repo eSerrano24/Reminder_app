@@ -4,9 +4,9 @@ const Table = props => {
   const { characterData, removeCharacter } = props;
 
   return (
-    <table>
-      <TableHeader />
-      <TableBody
+    <table style={{color: "blue", width: "auto"}}>
+      <TableHeader  />
+      <TableBody 
         characterData={characterData}
         removeCharacter={removeCharacter}
       />
@@ -20,9 +20,9 @@ let TableHeader = () => {
       <tr>
         <th>Type</th>
         <th>Description</th>
-         
-        <th></th>
-        <th></th>
+        <th style={{textAlign: "center"}}>Created</th>
+        <th style={{textAlign: "center"}}>Expires</th>
+        <th style={{textAlign: "center"}}>Delete</th>
       </tr>
     </thead>
   );
@@ -35,6 +35,7 @@ let TableBody = props => {
         <td>{row.type}</td>
         <td>{row.description}</td>
         <td>{new Date().toLocaleDateString('default', {month: 'long'})+'/'+new Date().getDate()+'/'+ new Date().getFullYear()}</td>
+        <td>[edit]</td>
         <td>
           <button onClick={() => props.removeCharacter(index)}>Delete</button>
         </td>
