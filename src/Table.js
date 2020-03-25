@@ -18,11 +18,11 @@ let TableHeader = () => {
   return (
     <thead>
       <tr>
-        <th>Type</th>
-        <th>Description</th>
-        <th style={{textAlign: "center"}}>Created</th>
+        <th style={{textAlign: "center"}}>Type</th>
+        <th style={{textAlign: "center"}}>Description</th>
+        <th style={{textAlign: "center"}}>Date</th>
         <th style={{textAlign: "center"}}>Expires</th>
-        <th style={{textAlign: "center"}}>Delete</th>
+        <th style={{textAlign: "center"}}></th>
       </tr>
     </thead>
   );
@@ -32,10 +32,10 @@ let TableBody = props => {
   const rows = props.characterData.map((row, index) => {
     return (
       <tr key={index}>
-        <td>{row.type}</td>
-        <td>{row.description}</td>
-        <td>{new Date().toLocaleDateString('default', {month: 'long'})+'/'+new Date().getDate()+'/'+ new Date().getFullYear()}</td>
-        <td>[edit]</td>
+        <td style={{textAlign: "center"}}>{row.type}</td>
+        <td style={{textAlign: "center"}}>{row.description}</td>
+        <td style={{textAlign: "center"}}>{new Date().toLocaleDateString('default', {month: 'long'})+' '+new Date().getDate()+', '+ new Date().getFullYear()}</td>
+        <td style={{textAlign: "center"}}>[edit]</td>
         <td>
           <button onClick={() => props.removeCharacter(index)}>Delete</button>
         </td>
