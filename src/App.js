@@ -12,12 +12,18 @@ class App extends Component {
 
   removeCharacter = index => {
     const { characters } = this.state;
+    const value = characters.filter((character, i) => {
+      return i !== index;
+    });
 
     this.setState({
-      characters: characters.filter((character, i) => {
-        return i !== index;
-      })
+      characters: value
     });
+
+    this.setState({
+      filter: value
+    });
+    
   };
 
   handleSubmit = character => {
