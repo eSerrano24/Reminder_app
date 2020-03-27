@@ -42,7 +42,7 @@ class App extends Component {
 
 
     // if the user is filtering by type then filter nothing
-    if(value != '') {
+    if(value !== '') {
       this.setState({filter: characters.filter((item, i, arr) => {
         return (regEx.test(item.type));
         })

@@ -6,7 +6,7 @@ const Filter = props => {
 
     return (
       <div>
-        <label>Filter</label>
+        <label>Filter by type</label>
         <input
           type="text"
           name="filter"

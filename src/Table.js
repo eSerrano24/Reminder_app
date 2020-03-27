@@ -1,7 +1,9 @@
-import React from "react";
+import React, {useState} from "react";
+import EdiText from 'react-editext';
 
 const Table = props => {
   const { characterData, removeCharacter } = props;
+  const [value, setValue] = useState('');
 
   return (
     <table style={{color: "blue", width: "auto"}}>
@@ -9,6 +11,8 @@ const Table = props => {
       <TableBody 
         characterData={characterData}
         removeCharacter={removeCharacter}
+        value = {value}
+        setValue = {setValue}
       />
     </table>
   );
@@ -30,12 +34,17 @@ let TableHeader = () => {
 
 let TableBody = props => {
   const rows = props.characterData.map((row, index) => {
+  
+  
+  const handleSave = val=> {
+      props.setValue(val);
+  }  
     return (
       <tr key={index}>
         <td style={{textAlign: "center"}}>{row.type}</td>
         <td style={{textAlign: "center"}}>{row.description}</td>
         <td style={{textAlign: "center"}}>{new Date().toLocaleDateString('default', {month: 'long'})+' '+new Date().getDate()+', '+ new Date().getFullYear()}</td>
-        <td style={{textAlign: "center"}}>[edit]</td>
+        <td style={{textAlign: "center"}}><EdiText type='text' value = {props.value} onSave = {handleSave}/></td>
         <td>
           <button onClick={() => props.removeCharacter(index)}>Delete</button>
         </td>
