@@ -3,9 +3,9 @@ import React from "react";
 const Filter = props => {
 
     const {filterData} = props;
-    
+
     return (
-      <form>
+      <div>
         <label>Filter</label>
         <input
           type="text"
@@ -14,7 +14,7 @@ const Filter = props => {
           value={filterData}
           onChange={props.handleFilter}
         />
-      </form>
+      </div>
     )
 }
 
