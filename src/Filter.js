@@ -3,6 +3,7 @@ import React from "react";
 const Filter = props => {
 
     const {filterData} = props;
+    
     return (
       <form>
         <label>Filter</label>

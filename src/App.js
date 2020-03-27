@@ -23,26 +23,28 @@ class App extends Component {
     this.setState({
       filter: value
     });
-    
+
   };
 
   handleSubmit = character => {
     const value = [...this.state.characters, character];
     this.setState({ characters: value });
     this.setState({ filter: value});
-    this.setState({filterData: ''});
+    this.setState({ filterData: ''});
   };
 
   // filter method
   handleFilter = key => {
-    const {value} = key.target;
-    this.setState({filterData: value}) // arr.filter the characters
+    const {value} = key.target; // filter data
+    const regEx = new RegExp('^'+value);
     const {characters} = this.state;
+    this.setState({filterData: value});
 
+
+    // if the user is filtering by type then filter nothing
     if(value != '') {
       this.setState({filter: characters.filter((item, i, arr) => {
-        // alert(item.type);
-        return (item.type == value);
+        return (regEx.test(item.type));
         })
       })
     } else {
