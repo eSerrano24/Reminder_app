@@ -45,11 +45,11 @@ let TableBody = props => {
   }  
   // td expire ...
     return (
-      <tr key={index}>
+      <tr key={index} name="expire">
         <td style={{textAlign: "center"}}>{row.type}</td>
         <td style={{textAlign: "center"}}>{row.description}</td>
         <td style={{textAlign: "center"}}>{new Date().toLocaleDateString('default', {month: 'long'})+' '+new Date().getDate()+', '+ new Date().getFullYear()}</td>
-        <td name="expire">
+        <td >
           <EdiText
             type="date"
             value= 'YYYY-MM-DD'
