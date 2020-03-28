@@ -1,9 +1,10 @@
 import React, {useState} from "react";
 import EdiText from 'react-editext';
 
+let count = 0;
 const Table = props => {
   const { characterData, removeCharacter } = props;
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState(0);
 
   return (
     <table style={{color: "blue", width: "auto"}}>
@@ -35,20 +36,27 @@ let TableHeader = () => {
 let TableBody = props => {
   const rows = props.characterData.map((row, index) => {
   
-  
-  const handleSave = val => { 
-    props.setValue(val);
-  }  
+  const handleSave = (val) => {
+    alert(val);
+    // have to set the latest child's value, the children of the >>tds<<,
+    // then got re arrange the child by a temp variable maybe 
+    props.setValue(props.value+1)
 
+  }  
+  // td expire ...
     return (
       <tr key={index}>
         <td style={{textAlign: "center"}}>{row.type}</td>
         <td style={{textAlign: "center"}}>{row.description}</td>
         <td style={{textAlign: "center"}}>{new Date().toLocaleDateString('default', {month: 'long'})+' '+new Date().getDate()+', '+ new Date().getFullYear()}</td>
-        <td><EdiText type="date"
-          hint="All dates are allowed between 2000 and 2049"
-          value={props.value}
-          onSave={handleSave}/> </td>
+        <td name="expire">
+          <EdiText
+            type="date"
+            value= 'YYYY-MM-DD'
+            onSave={handleSave}
+          />
+     
+        </td>
         <td>
           <button onClick={() => props.removeCharacter(index)}>Delete</button>
         </td>
