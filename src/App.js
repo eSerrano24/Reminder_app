@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Table from "./Table";
 import Form from "./Form";
 import Filter from "./Filter";
+import Order from "./Order";
 
 class App extends Component {
   state = {
@@ -40,7 +41,6 @@ class App extends Component {
     const {characters} = this.state;
     this.setState({filterData: value});
 
-
     // if the user is filtering by type then filter nothing
     if(value !== '') {
       this.setState({filter: characters.filter((item, i, arr) => {
@@ -51,6 +51,10 @@ class App extends Component {
       this.setState({filter: characters});
     }
   };
+
+  sortTable = choice => {
+    
+  }
 
   render() {
     const { filterData, filter } = this.state;
@@ -63,6 +67,7 @@ class App extends Component {
           filterData={filterData} 
           handleFilter={this.handleFilter}
         />
+        <Order sortTable = {this.sortTable}/>
         <h4>Create</h4>
         <Form handleSubmit={this.handleSubmit} />
         <h4>Reminder wall</h4>

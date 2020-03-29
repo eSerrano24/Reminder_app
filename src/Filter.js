@@ -2,6 +2,7 @@ import React from "react";
 
 const Filter = props => {
 
+    // to concat the input
     const {filterData} = props;
 
     return (

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import EdiText from 'react-editext';
 
 let count = 0;
@@ -6,7 +6,7 @@ const Table = props => {
   const { characterData, removeCharacter } = props;
 
   return (
-    <table style={{color: "blue", width: "auto"}}>
+    <table id = "myTable" style={{color: "blue", width: "auto"}}>
       <TableHeader  />
       <TableBody 
         characterData={characterData}
@@ -48,7 +48,7 @@ let TableBody = props => {
         <td id={"td_"+count}>
           <EdiText
             type="date"
-            value= 'YYYY-MM-DD'
+            value= ''
             onSave={handleSave}
             inputProps={{
               count: count++
