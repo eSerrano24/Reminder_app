@@ -4,7 +4,6 @@ import EdiText from 'react-editext';
 let count = 0;
 const Table = props => {
   const { characterData, removeCharacter } = props;
-  const [value, setValue] = useState(0);
 
   return (
     <table style={{color: "blue", width: "auto"}}>
@@ -12,8 +11,6 @@ const Table = props => {
       <TableBody 
         characterData={characterData}
         removeCharacter={removeCharacter}
-        value = {value}
-        setValue = {setValue}
       />
     </table>
   );
@@ -36,34 +33,35 @@ let TableHeader = () => {
 let TableBody = props => {
   const rows = props.characterData.map((row, index) => {
   
-  const handleSave = (val) => {
-    alert(val);
-    // have to set the latest child's value, the children of the >>tds<<,
+  const handleSave = (val, iP) => {
+    alert(iP.count); // -- it works
+    // have to set the latest child's value, the children of the >>trs<<,
     // then got re arrange the child by a temp variable maybe 
-    props.setValue(props.value+1)
-
+    // but before that got to give the tr a value
   }  
-  // td expire ...
+  // tr expire ...
     return (
-      <tr key={index} name="expire">
+    <tr key={index} name="expire" id={'expire_'+count}>
         <td style={{textAlign: "center"}}>{row.type}</td>
         <td style={{textAlign: "center"}}>{row.description}</td>
         <td style={{textAlign: "center"}}>{new Date().toLocaleDateString('default', {month: 'long'})+' '+new Date().getDate()+', '+ new Date().getFullYear()}</td>
-        <td >
+        <td id={"td_"+count}>
           <EdiText
             type="date"
             value= 'YYYY-MM-DD'
             onSave={handleSave}
+            inputProps={{
+              count: count++
+            }}
           />
-     
         </td>
         <td>
           <button onClick={() => props.removeCharacter(index)}>Delete</button>
         </td>
-      </tr>
+      </tr>   
     );
   });
-
+  count = 0; // must reset this back to give the tr the right count value
   return <tbody>{rows}</tbody>;
 };
 
