@@ -65,7 +65,8 @@ class App extends Component {
 
   sortTable = () => {
     for(let i = 0; i < this.state.td_array.length; i++) {
-      alert(this.state.td_array);
+      console.log('the td_array:');
+      console.log(this.state.td_array);
       document.getElementById("myTable").rows[i+1].getElementsByTagName("TD")[3].value = this.state.td_array[i];
     }
 
@@ -75,11 +76,10 @@ class App extends Component {
     while (switching) {
       switching = false;
       rows = table.rows;
-      alert("rows: "+rows);
       for (i = 1; i < (rows.length-1); i++) {
         shouldSwitch = false;
-        x = rows[i].getElementsByTagName("TD")[3];
-        y = rows[i+1].getElementsByTagName("TD")[3];
+        x = rows[i].getElementsByTagName("TD")[3].value;
+        y = rows[i+1].getElementsByTagName("TD")[3].value;
         console.log(x);
         
         /*x2 = document.getElementById('expire_'+(i-1)).value;
@@ -99,8 +99,9 @@ class App extends Component {
     } 
     if (shouldSwitch){
       rows[i].parentNode.insertBefore(rows[i+1], rows[i]);
-      alert('true');
-      // rename every id
+      // replace the array's here too
+      // ...
+      // ...
       switching = true;
     }
   }
