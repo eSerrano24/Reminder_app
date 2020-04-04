@@ -22,6 +22,8 @@ class Form extends Component {
 
   onFormSubmit = event => {
     event.preventDefault();
+    this.props.td_array.push(null);
+    alert(this.props.td_array.length);
 
     this.props.handleSubmit(this.state);
     this.setState(this.initialState);
