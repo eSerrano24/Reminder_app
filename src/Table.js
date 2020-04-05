@@ -3,11 +3,12 @@ import EdiText from 'react-editext';
 
 let count = 0;
 const Table = props => {
+  
   const { characterData, removeCharacter, td_array, td_value, changeTd } = props;
 
   return (
     <table id = "myTable" style={{color: "blue", width: "auto"}}>
-      <TableHeader  />
+      <TableHeader/>
       <TableBody 
         characterData={characterData}
         removeCharacter={removeCharacter}
@@ -34,25 +35,24 @@ let TableHeader = () => {
 };
 
 let TableBody = props => {
+
   const rows = props.characterData.map((row, index) => {
   
   const handleSave = (val, iP) => {
-    const name = 'td_'+iP.count;
-    props.td_array[iP.count] = val;
-    props.changeTd(val);
-    // const id = 'expire_'+iP.count;
-    alert(iP.count); // -- it works
-    // alert(id);
+    props.td_array[iP.count] = val; // we don't need to use setState?
+    props.changeTd(val); // this is to share the handleSave val data with the td value below
+
+    alert("Row: "+iP.count); // -- this alert tells us the row we chose
   }  
-  // tr expire ...
     return (
-    <tr key={index} name="expire" id={'expire_'+count} value={""}>
+    <tr key={index}>
         <td style={{textAlign: "center"}}>{row.type}</td>
         <td style={{textAlign: "center"}}>{row.description}</td>
         <td style={{textAlign: "center"}}>{new Date().toLocaleDateString('default', {month: 'long'})+' '+new Date().getDate()+', '+ new Date().getFullYear()}</td>
-        <td name = {"td_"+count} value = {props.td_value}>
+        <td name = {"td_"+count /* may not be neccessary */} value = {props.td_value}>
           <EdiText
             type="date"
+            value={props.td_array[index]}
             onSave={handleSave}
             inputProps={{
               count: count++,
@@ -64,8 +64,9 @@ let TableBody = props => {
         </td>
       </tr>   
     ); 
-  }); // up til here was .mapping the rows of the table
+  }); // up until here the code was .map-ping the rows of the table
   count = 0; // must reset this back to give the tr the right count value
+  console.log('new table');
   return <tbody>{rows}</tbody>;
 };
 
