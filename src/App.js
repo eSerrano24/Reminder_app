@@ -45,11 +45,19 @@ class App extends Component {
   };
 
   // value of the expiration date when it is changed for the table class
-  changeTd = val => {
-    this.setState({td_value: val})
+  changeTd = (val, ind) => {
+    const {characters} = this.state;
+    this.setState({td_value: val});
+    // this.state.characters[ind].value = val;
+    this.setState({
+      characters: characters.map(function(row, i, characters) {
+        if(i==ind) {
+          row.value = Date.parse(val);
+        }
+        return row;
+      })
+    })
   }
-
-  changeTdAr = val => {}
 
   // filter method
   handleFilter = val => {
@@ -73,6 +81,16 @@ class App extends Component {
 
   sortTable = () => {
 
+    const {characters, td_array} = this.state;
+   
+    const obj = [].concat(characters).sort(function(a,b){
+      return a.value - b.value;
+    });
+
+    const obj2 = obj.map((val, ind )=> {
+      return new Date(val.value).toLocaleDateString();
+    });
+     
     // we must revalue the rows because the td_array should be the source of properly mapping the table.row[3]values to it's td_index. if after rearrangement or deletion, the rows "may" have never been updated yet.
     // I could be wrong ... not to self, comment it out to see
     for (let i = 0; i < this.state.td_array.length; i++) {
@@ -86,6 +104,15 @@ class App extends Component {
     // this algorithm probably stinks but it's possible, right now it does not reorder everything completely in one shot
     let table, rows, switching, i, x, y, shouldSwitch;
     table = document.getElementById("myTable");
+
+    // map the table
+    this.setState({
+      characters: obj,
+      filter: obj,
+      td_array: obj2
+    })
+
+    /*
     switching = true;
     while (switching) {
       switching = false;
@@ -103,8 +130,8 @@ class App extends Component {
           shouldSwitch = true;
           break; 
         }
-      }
-    } 
+      } // end of for loop
+    } // end of while loop
 
     if (shouldSwitch) {
       // repeated code make a function out of this
@@ -118,10 +145,6 @@ class App extends Component {
       this.setState({
         characters: characters
       });
-      // rows[i].parentNode.insertBefore(rows[i+1], rows[i]);
-      // replace the td_array here too
-      // ...
-      // ...
       // tricky must remember the rows and the array index are different by 'one' when mapping these comparatively
       const td_array = this.state.td_array;
       temp = td_array[i];
@@ -131,12 +154,12 @@ class App extends Component {
         td_array: td_array
       });
       switching = true;
-    }
+    } // end of if (switch) */
     console.log("sort: "+this.state.td_array);
   }
 
   render() {
-    const { filterData, filter, td_array, td_value } = this.state;
+    const { characters, filterData, filter, td_array, td_value } = this.state;
     return (
       <div className="container">
         <h3>Reminder</h3>
@@ -148,18 +171,17 @@ class App extends Component {
         <h4>Create</h4>
         <Form 
           changeTd={this.changeTd} 
-          changeTdAr={this.changeTdAr} 
           td_array={td_array} td_value={td_value} 
           handleSubmit={this.handleSubmit} 
         />
         <h4>Reminder wall</h4>
         <Table
-          characterData={filter}
+          original = {characters}
+          filter={filter}
           removeCharacter={this.removeCharacter}
           td_array={td_array}
           td_value = {td_value}
           changeTd={this.changeTd} 
-          changeTdAr={this.changeTdAr}
         />
       </div>
     );

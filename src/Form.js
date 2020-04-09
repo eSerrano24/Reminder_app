@@ -6,7 +6,8 @@ class Form extends Component {
 
     this.initialState = {
       type: "",
-      description: ""
+      description: "",
+      value: null
     };
 
     this.state = this.initialState;
@@ -23,10 +24,9 @@ class Form extends Component {
 
   onFormSubmit = event => {
     event.preventDefault(); 
-    const temp = (new Date().toLocaleDateString('default', {month: 'long'})+' '+new Date().getDate()+', '+ new Date().getFullYear());
+    const temp = new Date().toLocaleDateString('default', {month: 'long'})+' '+new Date().getDate()+', '+ new Date().getFullYear();
 
     // we don't need to use setState?
-    // this.props.changeTdAr(this.props.td_array.length-1);
     this.props.td_array.push(temp);
 
     alert("size of table array " + this.props.td_array.length);
