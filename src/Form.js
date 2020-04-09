@@ -2,18 +2,20 @@ import React, { Component } from "react";
 
 class Form extends Component {
   constructor(props) {
+
     super(props);
 
     this.initialState = {
       type: "",
       description: "",
-      value: null
+      value: null // will be numeric compared-matching with td_array Date()
     };
 
     this.state = this.initialState;
   }
 
   handleChange = event => {
+
     const { name, value } = event.target;
 
     this.setState({
@@ -23,11 +25,13 @@ class Form extends Component {
   };
 
   onFormSubmit = event => {
-    event.preventDefault(); 
-    const temp = new Date().toLocaleDateString('default', {month: 'long'})+' '+new Date().getDate()+', '+ new Date().getFullYear();
 
+    event.preventDefault(); 
+
+    const temp = 'December 31, 1969';
     // we don't need to use setState?
     this.props.td_array.push(temp);
+    this.props.tdExpire(new Date(temp).getTime());
 
     alert("size of table array " + this.props.td_array.length);
     alert("table array: "+this.props.td_array);
