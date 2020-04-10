@@ -4,17 +4,17 @@ import EdiText from 'react-editext';
 let count = 0;
 const Table = props => {
   
-  const { original, filter, removeCharacter, td_array, tdExpire } = props;
+  const { original, filterArr, removeCharacter, td_array, tdDates } = props;
 
   return (
     <table id = "myTable" style={{color: "blue", width: "auto"}}>
       <TableHeader/>
       <TableBody 
         original = {original}
-        filter={filter}
+        filterArr={filterArr}
         removeCharacter={removeCharacter}
         td_array = {td_array}
-        tdExpire = {tdExpire}
+        tdDates = {tdDates}
       />
     </table>
   );
@@ -36,13 +36,12 @@ let TableHeader = () => {
 
 let TableBody = props => {
 
-  const rows = props.filter.map((row, index) => {
+  const rows = props.filterArr.map((row, index) => {
   
   const handleSave = (val, iP) => {
-    alert(val);
     props.td_array[iP.count] = new Date(val).toLocaleDateString(); // we don't need to use setState?
-    props.tdExpire(val, iP.count); // this is to share the handleSave val data with the td value below
-    
+    props.tdDates(val, iP.count);
+
     alert("Row: "+iP.count); // -- this alert tells us the row we chose
   }  
     return (

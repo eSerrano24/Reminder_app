@@ -8,6 +8,7 @@ class Form extends Component {
     this.initialState = {
       type: "",
       description: "",
+      created: null,
       value: null // will be numeric compared-matching with td_array Date()
     };
 
@@ -31,9 +32,8 @@ class Form extends Component {
     const temp = 'December 31, 1969';
     // we don't need to use setState?
     this.props.td_array.push(temp);
-    this.props.tdExpire(new Date(temp).getTime());
+    this.props.tdDates(new Date(temp).getTime());
 
-    alert("size of table array " + this.props.td_array.length);
     alert("table array: "+this.props.td_array);
     console.log('td_arr on submit: '+this.props.td_array);
 

@@ -3,7 +3,7 @@ import React from "react";
 const Filter = props => {
 
     // to concat the input
-    const {filterData} = props;
+    const {filterExpression} = props;
 
     return (
       <div>
@@ -12,7 +12,7 @@ const Filter = props => {
           type="text"
           name="filter"
           id="filter"
-          value={filterData}
+          value={filterExpression}
           onChange={props.handleFilter}
         />
       </div>
