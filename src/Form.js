@@ -29,12 +29,8 @@ class Form extends Component {
 
     event.preventDefault(); 
 
-    const temp = 'December 31, 1969';
-    // we don't need to use setState?
-    this.props.td_array.push(temp);
-    this.props.tdDates(new Date(temp).getTime());
-
-    alert("table array: "+this.props.td_array);
+    const temp = new Date(1969).toDateString();
+    this.props.tdDates(temp, this.props.td_array.length-1);
     console.log('td_arr on submit: '+this.props.td_array);
 
     this.props.handleSubmit(this.state);

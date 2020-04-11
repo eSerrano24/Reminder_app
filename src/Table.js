@@ -4,7 +4,7 @@ import EdiText from 'react-editext';
 let count = 0;
 const Table = props => {
   
-  const { original, filterArr, removeCharacter, td_array, tdDates } = props;
+  const { original, filterArr, removeCharacter, td_array, tdDates, deletePage, td_deleted } = props;
 
   return (
     <table id = "myTable" style={{color: "blue", width: "auto"}}>
@@ -15,6 +15,8 @@ const Table = props => {
         removeCharacter={removeCharacter}
         td_array = {td_array}
         tdDates = {tdDates}
+        deletePage = {deletePage}
+        td_deleted = {td_deleted}
       />
     </table>
   );
@@ -39,10 +41,10 @@ let TableBody = props => {
   const rows = props.filterArr.map((row, index) => {
   
   const handleSave = (val, iP) => {
-    props.td_array[iP.count] = new Date(val).toLocaleDateString(); // we don't need to use setState?
+    props.td_array[iP.count] = val; // we don't need to use setState?
     props.tdDates(val, iP.count);
 
-    alert("Row: "+iP.count); // -- this alert tells us the row we chose
+    // alert("Row: "+iP.count); // -- this alert tells us the row we chose
   }  
     return (
     <tr key={index}>
@@ -52,7 +54,7 @@ let TableBody = props => {
         <td>
           <EdiText
             type="date"
-            value={props.td_array[index]} // bind this with the array (because rows move around)
+            value={(props.deletePage == true) ? props.td_deleted[index] : props.td_array[index]} // bind this with the array (because rows move around)
             onSave={handleSave}
             inputProps={{
               count: count++,
