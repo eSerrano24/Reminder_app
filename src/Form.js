@@ -8,8 +8,8 @@ class Form extends Component {
     this.initialState = {
       type: "",
       description: "",
-      created: null,
-      value: null // will be numeric compared-matching with td_array Date()
+      deadline: new Date("").toDateString(),
+      created: new Date().getTime()
     };
 
     this.state = this.initialState;
@@ -27,13 +27,16 @@ class Form extends Component {
 
   onFormSubmit = event => {
 
-    event.preventDefault(); 
+    event.preventDefault();
+    console.log('event: ');
+    console.log(event);
+    console.log(event.target.description); 
 
-    const temp = new Date(1969).toDateString();
-    this.props.tdDates(temp, this.props.td_array.length-1);
-    console.log('td_arr on submit: '+this.props.td_array);
+    console.log('state: ');
+    console.log(this.state);
 
     this.props.handleSubmit(this.state);
+
     this.setState(this.initialState);
   };
 

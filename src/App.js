@@ -9,30 +9,33 @@ class App extends Component {
     reminders: [],
     filterArr: [],
     filterExpression: '',
-    td_array: [],
     deleted: [],
-    td_deleted: [],
-    deletePage: false
+    deletePage: "FALSE"
   };
 
   removeCharacter = index => { // does not work for the trash yet
-    const {reminders, td_deleted, deleted } = this.state;
-    const newDelete = [...td_deleted, reminders[index].value];
-    const newArr = reminders.filter((notused, i) => {
-      return i !== index;
-    });
-
-    this.setState({
-      deleted: [...deleted, reminders[index]],
-      reminders: newArr,
-      filterArr: newArr,
-      td_deleted: newDelete
-    });
+    const {reminders, deleted, deletePage } = this.state;
+    if (deletePage === "TRUE") {
+      const newArr = deleted.filter((notused, i) => {
+        return i !== index;
+      });
+      this.setState({
+        deleted: newArr,
+        filterArr: newArr,
+      });
+    } else {
+      const newArr = reminders.filter((notused, i) => {
+        return i !== index;
+      });
+      this.setState({
+        deleted: [...deleted, reminders[index]],
+        reminders: newArr,
+        filterArr: newArr,
+      });
+    } 
 
     // must resize table-array after deleting
     // alert("removing (index): "+index);
-    this.state.td_array.splice(index, 1);
-    console.log("td_arr: on remove- "+this.state.td_array);
   };
 
   // when form is submitted
@@ -43,22 +46,8 @@ class App extends Component {
       filterArr: arr,
       filterExpression: ''
      });
+     console.log(arr);
   };
-
-  // value of the expiration date when it is changed for the table class
-  tdDates = (val, ind) => {
-    const {reminders, td_array} = this.state;
-    this.setState({
-      td_array: [...td_array, val],
-      reminders: reminders.map(function(row, i) {
-        if(i===ind) {
-          row.value = val;
-          row.created = new Date().getTime();
-        }
-        return row;
-      })
-    }) 
-  }
 
   // filter method
   handleFilter = val => {
@@ -89,8 +78,13 @@ class App extends Component {
     let obj; let returned = 0;
     if (name === 'deleted') {
       obj = deleted;
-      this.setState({deletePage: !deletePage});
+      if (deletePage === 'FALSE') {
+        this.setState({deletePage: 'TRUE'});
+      } 
     } else if (name === 'alphabetized') {
+      if (deletePage==="TRUE") {
+        this.setState({deletePage: "FALSE"});
+      }
       obj = [].concat(reminders).sort(function(a, b) {
         if (a.type.toLowerCase() < b.type.toLowerCase()) {
           returned = -1;
@@ -102,13 +96,16 @@ class App extends Component {
       });
     } // end of aphabetized
     else {
+      if (deletePage==="TRUE") {
+        this.setState({deletePage: "FALSE"});
+      }
       obj = [].concat(reminders).sort(function(a,b) {
         if (name === 'deadline') {
           // alert('returned deadline');
-          if (a.value > b.value) {
+          if (a.deadline > b.deadline) {
             returned = -1;
           }
-          if (b.value > a.value) {
+          if (b.deadline > a.deadline) {
             returned = 1;
           } 
           return returned;
@@ -119,16 +116,12 @@ class App extends Component {
         }
         return returned; 
       });
-      const td_sort = obj.map((val)=> {
-        return val.value;
-      });
   
       // map the table
       this.setState({
-        [value]: obj,
-        td_array: td_sort
+        [value]: obj
       });
-      console.log("sort: "+this.state.td_array);
+
     }
     this.setState({
       filterArr: this.selectFilter(this.state.filterExpression, obj), 
@@ -136,31 +129,37 @@ class App extends Component {
   }
 
   undo = () => {
-    const {reminders, deleted, td_array, td_deleted} = this.state;
-    if (deleted.length > 0) {
-    const push = deleted[deleted.length-1];
-    const newArr = [...reminders, push];
-    alert(push.value);
-    this.setState({
-      td_array: [...td_array, push.value],
-      td_deleted: (td_deleted).filter((val, ind)=>{
-        return ind !== (td_deleted.length-1);
-      }),
-
-      reminders: newArr,
-
-      deleted: deleted.filter((val, ind) => {
-         return ind !== deleted.length - 1;
-      }),
-      })
+    const {reminders, deleted} = this.state;
+      if (deleted.length > 0) {
+        const push = deleted[deleted.length-1];
+        const newArr = [...reminders, push];
+        alert(push.deadline);
+        this.setState({
+        reminders: newArr,
+        deleted: deleted.filter((val, ind) => {
+          return ind !== deleted.length - 1;
+          }),
+        })        
       this.setState({
         filterArr: this.selectFilter(this.state.filterExpression, newArr),
       })
     }
   }
 
+  updateReminders = (rem, count) => {
+    const {reminders} = this.state;
+    this.setState({
+      reminders: reminders.map((val, ind) => {
+        if(ind === count) {
+          val.deadline = rem;
+        }
+        return val;
+      })
+    });
+  }
+
   render() {
-    const { reminders, filterExpression, filterArr, td_array, deletePage, td_deleted} = this.state;
+    const { reminders, filterExpression, filterArr, deletePage, deleted} = this.state;
     return (
       <div className="container">
         <h3>Reminder</h3>
@@ -171,22 +170,17 @@ class App extends Component {
         />
         <Options reminders={reminders} sortTable = {this.sortTable}/>
         <h4>Create</h4>
-        <Form 
-          tdDates={this.tdDates} 
-          td_array={td_array} 
+        <Form  
           handleSubmit={this.handleSubmit} 
         />
         <h4>Reminder wall</h4>
         <Table
-          deletePage={deletePage}
-          td_deleted = {td_deleted}
-          td_array={td_array}
+          deletePage = {deletePage}
+          deleted = {deleted}
           original = {reminders}
-          filterArr={filterArr}
-          removeCharacter={this.removeCharacter}
-
-          tdDates={this.tdDates} 
-
+          filterArr = {filterArr}
+          removeCharacter = {this.removeCharacter}
+          updateReminders = {this.updateReminders}
         />
       </div>
     );
