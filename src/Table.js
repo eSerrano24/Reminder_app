@@ -4,7 +4,7 @@ import EdiText from 'react-editext';
 let count = 0;
 const Table = props => {
   
-  const { original, filterArr, removeCharacter, deletePage, deleted, updateReminders } = props;
+  const { original, filterArr, removeCharacter, deleted, updateReminders } = props;
 
   return (
     <table id = "myTable" style={{color: "blue", width: "auto"}}>
@@ -13,7 +13,6 @@ const Table = props => {
         original = {original}
         filterArr={filterArr}
         removeCharacter={removeCharacter}
-        deletePage = {deletePage}
         deleted = {deleted}
         updateReminders = {updateReminders}
       />

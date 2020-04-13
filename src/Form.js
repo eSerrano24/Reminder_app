@@ -16,27 +16,15 @@ class Form extends Component {
   }
 
   handleChange = event => {
-
     const { name, value } = event.target;
-
     this.setState({
       [name]: value
     });
-
   };
 
   onFormSubmit = event => {
-
     event.preventDefault();
-    console.log('event: ');
-    console.log(event);
-    console.log(event.target.description); 
-
-    console.log('state: ');
-    console.log(this.state);
-
     this.props.handleSubmit(this.state);
-
     this.setState(this.initialState);
   };
 
@@ -62,6 +50,7 @@ class Form extends Component {
           onChange={this.handleChange}
         />
         <button type="submit">Submit</button>
+        {/** add a calender to input the deadline for this form */}
       </form>
     );
   }

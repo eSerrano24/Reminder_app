@@ -4,18 +4,17 @@ const Filter = props => {
 
     // to concat the input
     const {filterExpression} = props;
-
+    let styles = {width:'250px'};
     return (
-      <div>
-        <label>Filter by type</label>
         <input
           type="text"
           name="filter"
           id="filter"
           value={filterExpression}
           onChange={props.handleFilter}
+          style = {styles}
+          placeholder = 'Filter by Type'
         />
-      </div>
     )
 }
 

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import Table from "./Table";
 import Form from "./Form";
-import Filter from "./Filter";
-import Options from "./Options";
+import Sort from "./Sort";
+import Nav from "./Nav";
 
 class App extends Component {
   state = {
@@ -10,12 +10,12 @@ class App extends Component {
     filterArr: [],
     filterExpression: '',
     deleted: [],
-    deletePage: "FALSE"
+    page: "HOME",
   };
 
   removeCharacter = index => { // does not work for the trash yet
-    const {reminders, deleted, deletePage } = this.state;
-    if (deletePage === "TRUE") {
+    const {reminders, deleted, page } = this.state;
+    if (page === "GARBAGE") {
       const newArr = deleted.filter((notused, i) => {
         return i !== index;
       });
@@ -69,39 +69,45 @@ class App extends Component {
       filter = reminders;
     }
     return filter;
-  } 
+  }
+
+  changePage = event => {
+ 
+    const {name, value} = event.target; // name i.e. GARBAGE value.arr == deleted
+    const {deleted, reminders} = this.state;
+    let obj = []; 
+
+    if (name === 'GARBAGE') {
+      obj = deleted;
+    } else if (name === 'HOME') {
+      obj = reminders;
+    }
+    
+    this.setState({
+      page: name,
+      [value.arr]: obj,
+      filterArr: obj
+    });
+  }
 
   sortTable = (event) => {  
-    const {reminders, deleted, deletePage} = this.state;
-    const {name, value} = event.target;
+    const {reminders, deleted} = this.state;
+    const {name, value} = event.target; // value is: reminders name: ex: published
 
     let obj; let returned = 0;
-    if (name === 'deleted') {
-      obj = deleted;
-      if (deletePage === 'FALSE') {
-        this.setState({deletePage: 'TRUE'});
-      } 
-    } else if (name === 'alphabetized') {
-      if (deletePage==="TRUE") {
-        this.setState({deletePage: "FALSE"});
-      }
-      obj = [].concat(reminders).sort(function(a, b) {
-        if (a.type.toLowerCase() < b.type.toLowerCase()) {
-          returned = -1;
-        }
-        if (b.type.toLowerCase() < a.type.toLowerCase()) {
-          returned = 1;
-        } 
-        return returned;
-      });
-    } // end of aphabetized
-    else {
-      if (deletePage==="TRUE") {
-        this.setState({deletePage: "FALSE"});
-      }
-      obj = [].concat(reminders).sort(function(a,b) {
+ 
+    obj = [].concat(reminders).sort(function(a,b) {
+        if (name === 'alphabetized') {
+          if (a.type.toLowerCase() < b.type.toLowerCase()) {
+            returned = -1;
+          }
+          if (b.type.toLowerCase() < a.type.toLowerCase()) {
+            returned = 1;
+          } 
+          return returned;
+        } // end of aphabetized
         if (name === 'deadline') {
-          // alert('returned deadline');
+
           if (a.deadline > b.deadline) {
             returned = -1;
           }
@@ -111,8 +117,7 @@ class App extends Component {
           return returned;
         }
         if (name === 'published') {
-          // alert('returned published');
-          returned = a.created - b.created
+          returned = a.created - b.created;
         }
         return returned; 
       });
@@ -122,7 +127,6 @@ class App extends Component {
         [value]: obj
       });
 
-    }
     this.setState({
       filterArr: this.selectFilter(this.state.filterExpression, obj), 
     })
@@ -133,7 +137,6 @@ class App extends Component {
       if (deleted.length > 0) {
         const push = deleted[deleted.length-1];
         const newArr = [...reminders, push];
-        alert(push.deadline);
         this.setState({
         reminders: newArr,
         deleted: deleted.filter((val, ind) => {
@@ -159,31 +162,59 @@ class App extends Component {
   }
 
   render() {
-    const { reminders, filterExpression, filterArr, deletePage, deleted} = this.state;
-    return (
-      <div className="container">
-        <h3>Reminder</h3>
-        <button onClick={this.undo}>Undo</button>
-        <Filter 
-          filterExpression={filterExpression} 
-          handleFilter={this.handleFilter}
-        />
-        <Options reminders={reminders} sortTable = {this.sortTable}/>
-        <h4>Create</h4>
-        <Form  
-          handleSubmit={this.handleSubmit} 
-        />
-        <h4>Reminder wall</h4>
-        <Table
-          deletePage = {deletePage}
-          deleted = {deleted}
-          original = {reminders}
-          filterArr = {filterArr}
-          removeCharacter = {this.removeCharacter}
-          updateReminders = {this.updateReminders}
-        />
-      </div>
-    );
+    let { reminders, filterExpression, filterArr, page, deleted} = this.state;
+    if (page === 'GARBAGE') {
+      return (
+        <div className="container">
+          <h3>Reminder</h3>
+          <Nav changePage = {this.changePage}/>
+          <Sort reminders={reminders} sortTable = {this.sortTable}/> 
+ 
+          <label>Items: {filterArr.length}</label>
+          <Table
+            page = {page}
+            deleted = {deleted}
+            original = {reminders}
+            filterArr = {filterArr}
+            removeCharacter = {this.removeCharacter}
+            updateReminders = {this.updateReminders}
+          />
+        </div>
+      );
+    } else {
+      return (
+        <div className="container">
+
+          <h3>Reminder</h3>
+
+          <Nav changePage = {this.changePage}/>
+
+          <Form  
+            handleSubmit={this.handleSubmit} 
+          />
+
+          <label style={{position:'absolute', right:'150px'}}>Items: {filterArr.length}</label>
+
+          <Sort 
+            reminders={reminders} 
+            sortTable = {this.sortTable} 
+            undo = {this.undo} 
+ 
+            length = {deleted.length}
+            filterExpression = {filterExpression}
+            handleFilter = {this.handleFilter}
+          />
+
+          <Table
+            deleted = {deleted}
+            original = {reminders}
+            filterArr = {filterArr}
+            removeCharacter = {this.removeCharacter}
+            updateReminders = {this.updateReminders}
+          />
+        </div>
+      );
+    }
   }
 }
 
