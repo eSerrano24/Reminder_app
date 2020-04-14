@@ -1,35 +1,48 @@
 import React, { Component } from "react";
+import EdiText from "react-editext";
 
 class Form extends Component {
   constructor(props) {
-
     super(props);
 
     this.initialState = {
       type: "",
       description: "",
-      deadline: new Date("").toDateString(),
-      created: new Date().getTime()
+      deadline: null,
+      created: new Date().getTime(),
     };
 
     this.state = this.initialState;
   }
 
-  handleChange = event => {
+  handleChange = (event) => {
     const { name, value } = event.target;
     this.setState({
-      [name]: value
+      [name]: value,
     });
   };
 
-  onFormSubmit = event => {
+  onFormSubmit = (event) => {
     event.preventDefault();
+    if (this.initialState.deadline === null) {
+      const date = new Date("").toUTCString();
+      this.setState({
+        deadline: date,
+      });
+      this.initialState.deadline = date;
+    }
     this.props.handleSubmit(this.state);
     this.setState(this.initialState);
   };
 
   render() {
     const { type, description } = this.state;
+    const handleSave = (val) => {
+      this.setState({
+        deadline: val,
+      });
+      this.initialState.deadline = val;
+    };
 
     return (
       <form onSubmit={this.onFormSubmit}>
@@ -49,7 +62,13 @@ class Form extends Component {
           value={description}
           onChange={this.handleChange}
         />
-        <button type="submit">Submit</button>
+        <label>Deadline</label>
+        <EdiText //
+          type="date"
+          value={this.initialState.deadline ? this.initialState.deadline : ""}
+          onSave={handleSave}
+        />
+        <button type="submit">Post</button>
         {/** add a calender to input the deadline for this form */}
       </form>
     );

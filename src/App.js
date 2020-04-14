@@ -8,13 +8,15 @@ class App extends Component {
   state = {
     reminders: [],
     filterArr: [],
-    filterExpression: '',
+    filterExpression: "",
     deleted: [],
     page: "HOME",
+    thisDate: new Date(),
   };
 
-  removeCharacter = index => { // does not work for the trash yet
-    const {reminders, deleted, page } = this.state;
+  removeCharacter = (index) => {
+    // does not work for the trash yet
+    const { reminders, deleted, page } = this.state;
     if (page === "GARBAGE") {
       const newArr = deleted.filter((notused, i) => {
         return i !== index;
@@ -32,185 +34,279 @@ class App extends Component {
         reminders: newArr,
         filterArr: newArr,
       });
-    } 
+    }
 
     // must resize table-array after deleting
     // alert("removing (index): "+index);
   };
 
   // when form is submitted
-  handleSubmit = character => {
+  handleSubmit = (character) => {
     const arr = [...this.state.reminders, character];
-    this.setState({ 
+    this.setState({
       reminders: arr,
       filterArr: arr,
-      filterExpression: ''
-     });
-     console.log(arr);
+      filterExpression: "",
+    });
+    console.log(arr);
   };
 
   // filter method
-  handleFilter = val => {
-    const {value} = val.target; // filter data
-    this.setState({filterExpression: val.target.value});
+  handleFilter = (val) => {
+    const { value } = val.target; // filter data
+    this.setState({ filterExpression: val.target.value });
 
     // if the user has input reminders in the filter
-    this.setState({filterArr: this.selectFilter(value, this.state.reminders)});
+    this.setState({
+      filterArr: this.selectFilter(value, this.state.reminders),
+    });
   };
 
   selectFilter = (value, reminders) => {
-    const regEx = new RegExp('^'+value);
+    const regEx = new RegExp("^" + value);
     let filter;
-    if(value !== '') {
+    if (value !== "") {
       filter = reminders.filter((item) => {
-        return (regEx.test(item.type));
-      }) 
+        return regEx.test(item.type);
+      });
     } else {
       filter = reminders;
     }
     return filter;
-  }
+  };
 
-  changePage = event => {
- 
-    const {name, value} = event.target; // name i.e. GARBAGE value.arr == deleted
-    const {deleted, reminders} = this.state;
-    let obj = []; 
+  changePage = (event) => {
+    const { name, value } = event.target; // name i.e. GARBAGE value.arr == deleted
+    const { deleted, reminders } = this.state;
+    let obj = [];
 
-    if (name === 'GARBAGE') {
+    if (name === "GARBAGE") {
       obj = deleted;
-    } else if (name === 'HOME') {
+    } else if (name === "HOME" || name === "REMINDERS") {
       obj = reminders;
     }
-    
+
     this.setState({
       page: name,
       [value.arr]: obj,
-      filterArr: obj
+      filterArr: obj,
     });
-  }
+  };
 
-  sortTable = (event) => {  
-    const {reminders, deleted} = this.state;
-    const {name, value} = event.target; // value is: reminders name: ex: published
+  sortTable = (event) => {
+    const { reminders, deleted, filterExpression, page } = this.state;
+    const { name } = event.target; // value is: reminders name: ex: published
 
-    let obj; let returned = 0;
- 
-    obj = [].concat(reminders).sort(function(a,b) {
-        if (name === 'alphabetized') {
-          if (a.type.toLowerCase() < b.type.toLowerCase()) {
-            returned = -1;
-          }
-          if (b.type.toLowerCase() < a.type.toLowerCase()) {
-            returned = 1;
-          } 
-          return returned;
-        } // end of aphabetized
-        if (name === 'deadline') {
+    let obj1, obj2;
 
-          if (a.deadline > b.deadline) {
-            returned = -1;
-          }
-          if (b.deadline > a.deadline) {
-            returned = 1;
-          } 
-          return returned;
-        }
-        if (name === 'published') {
-          returned = a.created - b.created;
-        }
-        return returned; 
-      });
-  
-      // map the table
-      this.setState({
-        [value]: obj
-      });
+    obj1 = this.sortArrs(0, reminders, name);
+    obj2 = this.sortArrs(0, deleted, name);
+
+    // map the table
+    this.setState({
+      reminders: obj1,
+      deleted: obj2,
+    });
 
     this.setState({
-      filterArr: this.selectFilter(this.state.filterExpression, obj), 
-    })
-  }
+      filterArr: this.selectFilter(
+        filterExpression,
+        page === "GARBAGE" ? obj2 : obj1
+      ),
+    });
+  };
+
+  sortArrs = (returned, items, name) => {
+    return [].concat(items).sort(function (a, b) {
+      if (name === "alphabetized") {
+        if (a.type.toLowerCase() < b.type.toLowerCase()) {
+          returned = -1;
+        }
+        if (b.type.toLowerCase() < a.type.toLowerCase()) {
+          returned = 1;
+        }
+        return returned;
+      } // end of aphabetized
+      if (name === "deadline") {
+        if (a.deadline > b.deadline) {
+          returned = -1;
+        }
+        if (b.deadline > a.deadline) {
+          returned = 1;
+        }
+        return returned;
+      }
+      if (name === "published") {
+        returned = a.created - b.created;
+      }
+      return returned;
+    });
+  };
 
   undo = () => {
-    const {reminders, deleted} = this.state;
-      if (deleted.length > 0) {
-        const push = deleted[deleted.length-1];
-        const newArr = [...reminders, push];
-        this.setState({
+    const { reminders, deleted } = this.state;
+    if (deleted.length > 0) {
+      const push = deleted[deleted.length - 1];
+      const newArr = [...reminders, push];
+      this.setState({
         reminders: newArr,
         deleted: deleted.filter((val, ind) => {
           return ind !== deleted.length - 1;
-          }),
-        })        
+        }),
+      });
       this.setState({
         filterArr: this.selectFilter(this.state.filterExpression, newArr),
-      })
+      });
     }
-  }
+  };
 
-  updateReminders = (rem, count) => {
-    const {reminders} = this.state;
-    this.setState({
-      reminders: reminders.map((val, ind) => {
-        if(ind === count) {
-          val.deadline = rem;
-        }
-        return val;
-      })
+  updateReminders = (deadline, count) => {
+    const { reminders, deleted, page } = this.state;
+    alert("reminders");
+    if (page === "GARBAGE") {
+      this.setState({
+        deleted: this.findInd(deleted, deadline, count),
+      });
+    } else {
+      this.setState({
+        reminders: this.findInd(reminders, deadline, count),
+      });
+    }
+  };
+
+  findInd = (type, deadline, count) => {
+    return type.map((val, ind) => {
+      if (ind === count) {
+        alert("ind === count");
+        val.deadline = deadline;
+      }
+      return val;
     });
-  }
+  };
 
   render() {
-    let { reminders, filterExpression, filterArr, page, deleted} = this.state;
-    if (page === 'GARBAGE') {
+    let {
+      reminders,
+      filterExpression,
+      filterArr,
+      page,
+      deleted,
+      thisDate,
+    } = this.state;
+    if (page === "GARBAGE") {
       return (
         <div className="container">
           <h3>Reminder</h3>
-          <Nav changePage = {this.changePage}/>
-          <Sort reminders={reminders} sortTable = {this.sortTable}/> 
- 
-          <label>Items: {filterArr.length}</label>
+          <Nav changePage={this.changePage} />
+
+          <label>Garbage &nbsp;&nbsp;&nbsp; Items: {filterArr.length}</label>
           <Table
-            page = {page}
-            deleted = {deleted}
-            original = {reminders}
-            filterArr = {filterArr}
-            removeCharacter = {this.removeCharacter}
-            updateReminders = {this.updateReminders}
+            page={page}
+            deleted={deleted}
+            original={reminders}
+            filterArr={filterArr}
+            removeCharacter={this.removeCharacter}
+            updateReminders={this.updateReminders}
           />
         </div>
       );
+    } else if (page === "CREATE") {
+      return (
+        <div className="container">
+          <h3>Reminder</h3>
+
+          <Nav changePage={this.changePage} />
+
+          <Form
+            handleSubmit={this.handleSubmit}
+            updateReminders={this.updateReminders}
+          />
+        </div>
+      );
+    } else if (page === "SORT") {
+      return (
+        <div className="container">
+          <h3>Reminder</h3>
+
+          <Nav changePage={this.changePage} />
+          <Sort
+            reminders={reminders}
+            sortTable={this.sortTable}
+            undo={this.undo}
+            filterExpression={filterExpression}
+            handleFilter={this.handleFilter}
+          />
+        </div>
+      );
+    } else if (page === "REMINDERS") {
+      if (deleted.length > 0) {
+        return (
+          <div className="container">
+            <h3>Reminder</h3>
+
+            <Nav changePage={this.changePage} />
+            <label>
+              Reminder Wall &nbsp;&nbsp;&nbsp; Items: {filterArr.length}
+            </label>
+            <button onClick={this.undo}>Undo</button>
+            <Table
+              deleted={deleted}
+              original={reminders}
+              filterArr={filterArr}
+              removeCharacter={this.removeCharacter}
+              updateReminders={this.updateReminders}
+            />
+          </div>
+        );
+      } else {
+        return (
+          <div className="container">
+            <h3>Reminder</h3>
+
+            <Nav changePage={this.changePage} />
+            <label>
+              Reminder Wall &nbsp;&nbsp;&nbsp; Items: {filterArr.length}
+            </label>
+            <Table
+              deleted={deleted}
+              original={reminders}
+              filterArr={filterArr}
+              removeCharacter={this.removeCharacter}
+              updateReminders={this.updateReminders}
+            />
+          </div>
+        );
+      }
     } else {
       return (
         <div className="container">
-
           <h3>Reminder</h3>
+          {thisDate.toLocaleString()}
+          <Nav changePage={this.changePage} />
 
-          <Nav changePage = {this.changePage}/>
-
-          <Form  
-            handleSubmit={this.handleSubmit} 
+          <Form
+            handleSubmit={this.handleSubmit}
+            updateReminders={this.updateReminders}
           />
 
-          <label style={{position:'absolute', right:'150px'}}>Items: {filterArr.length}</label>
-
-          <Sort 
-            reminders={reminders} 
-            sortTable = {this.sortTable} 
-            undo = {this.undo} 
- 
-            length = {deleted.length}
-            filterExpression = {filterExpression}
-            handleFilter = {this.handleFilter}
+          <Sort
+            reminders={reminders}
+            sortTable={this.sortTable}
+            undo={this.undo}
+            length={deleted.length}
+            filterExpression={filterExpression}
+            handleFilter={this.handleFilter}
           />
+          <label>
+            Reminder Wall &nbsp;&nbsp;&nbsp; Items: {filterArr.length}
+          </label>
 
           <Table
-            deleted = {deleted}
-            original = {reminders}
-            filterArr = {filterArr}
-            removeCharacter = {this.removeCharacter}
-            updateReminders = {this.updateReminders}
+            deleted={deleted}
+            original={reminders}
+            filterArr={filterArr}
+            removeCharacter={this.removeCharacter}
+            updateReminders={this.updateReminders}
           />
         </div>
       );
