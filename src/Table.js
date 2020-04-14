@@ -4,25 +4,83 @@ import EdiText from "react-editext";
 let count = 0;
 const Table = (props) => {
   const {
-    original,
-    deleted,
     filterArr,
+    reminders,
+    deleted,
     removeCharacter,
     updateReminders,
+    page,
+    selectFilter,
+    filterExpression,
+    undo,
   } = props;
+  if (page === "HOME") {
+    if (deleted.length === 0) {
+      return (
+        <div>
+          <label>
+            Reminder Wall &nbsp;&nbsp;&nbsp; Items: {reminders.length}
+          </label>
+          <table style={{ color: "blue", width: "auto" }}>
+            <TableHeader />
+            <TableBody
+              removeCharacter={removeCharacter}
+              updateReminders={updateReminders}
+              filterArr={selectFilter(filterExpression, reminders)}
+            />
+          </table>
+          <label>Garbage Wall &nbsp;&nbsp;&nbsp; Items: {deleted.length}</label>
 
-  return (
-    <table id="myTable" style={{ color: "blue", width: "auto" }}>
-      <TableHeader />
-      <TableBody
-        original={original}
-        filterArr={filterArr}
-        removeCharacter={removeCharacter}
-        deleted={deleted}
-        updateReminders={updateReminders}
-      />
-    </table>
-  );
+          <table style={{ color: "blue", width: "auto" }}>
+            <TableHeader />
+            <TableBody
+              filterArr={selectFilter(filterExpression, deleted)}
+              removeCharacter={removeCharacter}
+              updateReminders={updateReminders}
+            />
+          </table>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <label>
+            Reminder Wall &nbsp;&nbsp;&nbsp; Items: {reminders.length}
+          </label>
+          <button onClick={undo}>Undo</button>
+          <table style={{ color: "blue", width: "auto" }}>
+            <TableHeader />
+            <TableBody
+              removeCharacter={removeCharacter}
+              updateReminders={updateReminders}
+              filterArr={selectFilter(filterExpression, reminders)}
+            />
+          </table>
+          <label>Garbage Wall &nbsp;&nbsp;&nbsp; Items: {deleted.length}</label>
+
+          <table style={{ color: "blue", width: "auto" }}>
+            <TableHeader />
+            <TableBody
+              filterArr={selectFilter(filterExpression, deleted)}
+              removeCharacter={removeCharacter}
+              updateReminders={updateReminders}
+            />
+          </table>
+        </div>
+      );
+    }
+  } else {
+    return (
+      <table id="myTable" style={{ color: "blue", width: "auto" }}>
+        <TableHeader />
+        <TableBody
+          filterArr={filterArr}
+          removeCharacter={removeCharacter}
+          updateReminders={updateReminders}
+        />
+      </table>
+    );
+  }
 };
 
 let TableHeader = () => {
@@ -49,7 +107,14 @@ let TableBody = (props) => {
       <tr key={index}>
         <td style={{ textAlign: "center" }}>{row.type}</td>
         <td style={{ textAlign: "center" }}>{row.description}</td>
-        <td style={{ textAlign: "center" }}>{new Date(row.created).getUTCFullYear() +"-"+ ((new Date(row.created).getUTCMonth()>9) ? new Date(row.created).getUTCMonth() : '0'+new Date(row.created).getUTCMonth()) +"-"+ new Date(row.created).getUTCDate() }
+        <td style={{ textAlign: "center" }}>
+          {new Date(row.created).getUTCFullYear() +
+            "-" +
+            (new Date(row.created).getUTCMonth() > 9
+              ? new Date(row.created).getUTCMonth()
+              : "0" + new Date(row.created).getUTCMonth()) +
+            "-" +
+            new Date(row.created).getUTCDate()}
         </td>
         <td>
           <EdiText //

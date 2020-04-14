@@ -75,24 +75,6 @@ class App extends Component {
     return filter;
   };
 
-  changePage = (event) => {
-    const { name, value } = event.target; // name i.e. GARBAGE value.arr == deleted
-    const { deleted, reminders } = this.state;
-    let obj = [];
-
-    if (name === "GARBAGE") {
-      obj = deleted;
-    } else if (name === "HOME" || name === "REMINDERS") {
-      obj = reminders;
-    }
-
-    this.setState({
-      page: name,
-      [value.arr]: obj,
-      filterArr: obj,
-    });
-  };
-
   sortTable = (event) => {
     const { reminders, deleted, filterExpression, page } = this.state;
     const { name } = event.target; // value is: reminders name: ex: published
@@ -140,6 +122,24 @@ class App extends Component {
         returned = a.created - b.created;
       }
       return returned;
+    });
+  };
+
+  changePage = (event) => {
+    const { name, value } = event.target; // name i.e. GARBAGE value.arr == deleted
+    const { deleted, reminders } = this.state;
+    let obj = [];
+
+    if (name === "GARBAGE") {
+      obj = deleted;
+    } else if (name === "HOME" || name === "REMINDERS") {
+      obj = reminders;
+    }
+
+    this.setState({
+      page: name,
+      [value.arr]: obj,
+      filterArr: obj,
     });
   };
 
@@ -203,10 +203,13 @@ class App extends Component {
           <Table
             page={page}
             deleted={deleted}
-            original={reminders}
+            reminders={reminders}
             filterArr={filterArr}
             removeCharacter={this.removeCharacter}
             updateReminders={this.updateReminders}
+            selectFilter={this.selectFilter}
+            filterExpression={filterExpression}
+            undo={this.undo}
           />
         </div>
       );
@@ -250,11 +253,15 @@ class App extends Component {
             </label>
             <button onClick={this.undo}>Undo</button>
             <Table
+              page={page}
               deleted={deleted}
-              original={reminders}
+              reminders={reminders}
               filterArr={filterArr}
               removeCharacter={this.removeCharacter}
               updateReminders={this.updateReminders}
+              selectFilter={this.selectFilter}
+              filterExpression={filterExpression}
+              undo={this.undo}
             />
           </div>
         );
@@ -268,11 +275,15 @@ class App extends Component {
               Reminder Wall &nbsp;&nbsp;&nbsp; Items: {filterArr.length}
             </label>
             <Table
+              page={page}
               deleted={deleted}
-              original={reminders}
+              reminders={reminders}
               filterArr={filterArr}
               removeCharacter={this.removeCharacter}
               updateReminders={this.updateReminders}
+              selectFilter={this.selectFilter}
+              filterExpression={filterExpression}
+              undo={this.undo}
             />
           </div>
         );
@@ -297,16 +308,17 @@ class App extends Component {
             filterExpression={filterExpression}
             handleFilter={this.handleFilter}
           />
-          <label>
-            Reminder Wall &nbsp;&nbsp;&nbsp; Items: {filterArr.length}
-          </label>
 
           <Table
+            page={page}
             deleted={deleted}
-            original={reminders}
+            reminders={reminders}
             filterArr={filterArr}
             removeCharacter={this.removeCharacter}
             updateReminders={this.updateReminders}
+            selectFilter={this.selectFilter}
+            filterExpression={filterExpression}
+            undo={this.undo}
           />
         </div>
       );
