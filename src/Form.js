@@ -29,7 +29,7 @@ class Form extends Component {
       this.setState({
         deadline: date,
       });
-      this.initialState.deadline = date;
+      this.initialState.deadline = "";
     }
     this.props.handleSubmit(this.state);
     this.setState(this.initialState);
@@ -53,6 +53,7 @@ class Form extends Component {
           id="type"
           value={type}
           onChange={this.handleChange}
+          required
         />
         <label>Description</label>
         <input
@@ -61,11 +62,12 @@ class Form extends Component {
           id="description"
           value={description}
           onChange={this.handleChange}
+          required
         />
         <label>Deadline</label>
         <EdiText //
           type="date"
-          value={this.initialState.deadline ? this.initialState.deadline : ""}
+          value={""}
           onSave={handleSave}
         />
         <button type="submit">Post</button>

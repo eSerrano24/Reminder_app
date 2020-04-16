@@ -16,28 +16,40 @@ class App extends Component {
 
   removeCharacter = (index) => {
     // does not work for the trash yet
-    const { reminders, deleted, page } = this.state;
-    if (page === "GARBAGE") {
-      const newArr = deleted.filter((notused, i) => {
-        return i !== index;
-      });
+    const { reminders, deleted, filterArr } = this.state;
+
+        let rem;
+        reminders.forEach((val) => {
+          if(index===val) 
+          {rem= val;
+
+          }
+        });
+        if(rem) {
+          this.setState({
+            deleted: [...deleted, rem],
+            reminders: reminders.filter((val)=>{
+              return val !==index;
+            })
+          });
+        } else { // garbage at home page
+
+          this.setState({
+            deleted: deleted.filter((val)=>{
+              return val !==index;
+            })
+          });
+        }
       this.setState({
-        deleted: newArr,
-        filterArr: newArr,
+        filterArr: filterArr.filter((val)=>{
+          return val !==index;
+        }),
       });
-    } else {
-      const newArr = reminders.filter((notused, i) => {
-        return i !== index;
-      });
-      this.setState({
-        deleted: [...deleted, reminders[index]],
-        reminders: newArr,
-        filterArr: newArr,
-      });
-    }
+    
+
 
     // must resize table-array after deleting
-    // alert("removing (index): "+index);
+    // alert("removing (index obj): "+index);
   };
 
   // when form is submitted
@@ -111,10 +123,10 @@ class App extends Component {
       } // end of aphabetized
       if (name === "deadline") {
         if (a.deadline > b.deadline) {
-          returned = -1;
+          returned = 1;
         }
         if (b.deadline > a.deadline) {
-          returned = 1;
+          returned = -1;
         }
         return returned;
       }

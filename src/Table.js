@@ -68,7 +68,7 @@ const Table = (props) => {
           </table>
         </div>
       );
-    }
+    } // almost end of home
   } else {
     return (
       <table id="myTable" style={{ color: "blue", width: "auto" }}>
@@ -119,7 +119,7 @@ let TableBody = (props) => {
         <td>
           <EdiText //
             type="date"
-            value={props.filterArr[count].deadline} // bind this with the array (because rows move around)
+            value={(props.filterArr[count].deadline===null)?'':props.filterArr[count].deadline} // bind this with the array (because rows move around)
             onSave={handleSave}
             inputProps={{
               count: count++,
@@ -127,7 +127,7 @@ let TableBody = (props) => {
           />
         </td>
         <td>
-          <button onClick={() => props.removeCharacter(index)}>Delete</button>
+          <button onClick={() => props.removeCharacter(props.filterArr[index])}>Delete</button>
         </td>
       </tr>
     );
