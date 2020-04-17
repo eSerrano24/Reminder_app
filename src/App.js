@@ -14,40 +14,47 @@ class App extends Component {
     thisDate: new Date(),
   };
 
-  removeCharacter = (index) => {
-    // does not work for the trash yet
+  removeCharacter = (index, type) => {
+    alert('remove Char');
     const { reminders, deleted, filterArr } = this.state;
 
-        let rem;
-        reminders.forEach((val) => {
-          if(index===val) 
-          {rem= val;
-
-          }
-        });
-        if(rem) {
-          this.setState({
-            deleted: [...deleted, rem],
-            reminders: reminders.filter((val)=>{
-              return val !==index;
-            })
-          });
-        } else { // garbage at home page
-
-          this.setState({
-            deleted: deleted.filter((val)=>{
-              return val !==index;
-            })
-          });
-        }
+    let rem;
+    reminders.forEach((val) => {
+      if (index === val) {
+        rem = val;
+      }
+    });
+    if (rem) { // if its from reminders
+      alert('app reminder if');
       this.setState({
-        filterArr: filterArr.filter((val)=>{
-          return val !==index;
+        deleted: [...deleted, rem],
+        reminders: reminders.filter((val) => {
+          return val !== index;
         }),
       });
-    
+    } else {
+      alert('appjs garbage if?');
+      this.setState({
+        deleted: deleted.filter((val) => {
+          return val !== index;
+        }),
+      }); 
+    }
 
+    if (type === 'recovery') {
+      this.setState({
+        reminders: [...reminders, rem]
+      });
+    }
 
+    this.setState({
+      filterArr: filterArr.filter((val) => {
+        return val !== index;
+      }),
+    });
+    console.log('deleted:');
+    console.log(this.state.deleted);
+    console.log('fin');
     // must resize table-array after deleting
     // alert("removing (index obj): "+index);
   };
@@ -174,7 +181,7 @@ class App extends Component {
 
   updateReminders = (deadline, count) => {
     const { reminders, deleted, page } = this.state;
-    alert("reminders");
+
     if (page === "GARBAGE") {
       this.setState({
         deleted: this.findInd(deleted, deadline, count),
@@ -189,7 +196,7 @@ class App extends Component {
   findInd = (type, deadline, count) => {
     return type.map((val, ind) => {
       if (ind === count) {
-        alert("ind === count");
+   
         val.deadline = deadline;
       }
       return val;
