@@ -44,7 +44,7 @@ const Table = (props) => {
         </div>
       );
     } else { // there is a deleted population
-      alert("there is deleted population");
+
       return (
         <div>
           <label>
@@ -75,7 +75,6 @@ const Table = (props) => {
       );
     } // almost end of home
   } else {
-    alert('filtered home or garbage');
     return (
       <table id="myTable" style={{ color: "blue", width: "auto" }}>
         <TableHeader recover= {page}/>
@@ -126,15 +125,13 @@ let TableBody = (props) => {
       // alert("Row: "+iP.count); // -- this alert tells us the row we chose
     };
     if (props.recover === "GARBAGE") {
-      alert("table garbage "+props.recover);
-
       return (
         <tr key={index}>
           <td>
             <button
               type="submit"
               onClick={()=>{props.removeCharacter(props.filterArr[index], "recover")}}
-            >??</button>
+            >?</button>
           </td>
           <td style={{ textAlign: "center" }}>{row.type}</td>
           <td style={{ textAlign: "center" }}>{row.description}</td>
@@ -173,7 +170,6 @@ let TableBody = (props) => {
         </tr>
       );
     } else {
-      alert("regular, no undo button "+props.recover);
 
       return (
         <tr key={index}>

@@ -15,7 +15,6 @@ class App extends Component {
   };
 
   removeCharacter = (index, type) => {
-    alert('remove Char');
     const { reminders, deleted, filterArr } = this.state;
 
     let rem;
@@ -24,8 +23,9 @@ class App extends Component {
         rem = val;
       }
     });
-    if (rem) { // if its from reminders
-      alert('app reminder if');
+    if (rem) {
+      // going into the garbage
+
       this.setState({
         deleted: [...deleted, rem],
         reminders: reminders.filter((val) => {
@@ -33,17 +33,18 @@ class App extends Component {
         }),
       });
     } else {
-      alert('appjs garbage if?');
+      // delete forever
+
+      if (type === "recover") {
+        this.setState({
+          reminders: [...reminders, index],
+        });
+      }
+
       this.setState({
         deleted: deleted.filter((val) => {
           return val !== index;
         }),
-      }); 
-    }
-
-    if (type === 'recovery') {
-      this.setState({
-        reminders: [...reminders, rem]
       });
     }
 
@@ -52,9 +53,7 @@ class App extends Component {
         return val !== index;
       }),
     });
-    console.log('deleted:');
-    console.log(this.state.deleted);
-    console.log('fin');
+
     // must resize table-array after deleting
     // alert("removing (index obj): "+index);
   };
@@ -196,7 +195,6 @@ class App extends Component {
   findInd = (type, deadline, count) => {
     return type.map((val, ind) => {
       if (ind === count) {
-   
         val.deadline = deadline;
       }
       return val;
