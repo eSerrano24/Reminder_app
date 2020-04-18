@@ -4,7 +4,7 @@ const Filter = props => {
 
     // to concat the input
     const {filterExpression} = props;
-    let styles = {width:'250px'};
+    let styles = {};
     return (
         <input
           type="text"

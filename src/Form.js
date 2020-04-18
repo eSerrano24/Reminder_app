@@ -10,6 +10,9 @@ class Form extends Component {
       description: "",
       deadline: null,
       created: new Date().getTime(),
+      $: 0,
+      duration: 0,
+      website: ''
     };
 
     this.state = this.initialState;
@@ -53,6 +56,7 @@ class Form extends Component {
           id="type"
           value={type}
           onChange={this.handleChange}
+          placeholder='pay bill'
           required
         />
         <label>Description</label>
@@ -62,14 +66,22 @@ class Form extends Component {
           id="description"
           value={description}
           onChange={this.handleChange}
+          placeholder='reminder city'
           required
         />
+        <label>$</label>
+        <input type='number' placeholder='0.00'></input>
+        <label>Duration</label>
+        <input type='number' placeholder='hours'></input>
+        <input type='number' placeholder='minutes'></input>
         <label>Deadline</label>
         <EdiText //
           type="date"
           value={""}
           onSave={handleSave}
         />
+        <label>Website</label>
+        <input type='text' placeholder='source link'></input>
         <button type="submit">Post</button>
         {/** add a calender to input the deadline for this form */}
       </form>

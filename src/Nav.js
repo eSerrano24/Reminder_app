@@ -16,21 +16,21 @@ const Nav = (props) => {
         value={{ arr: "reminders" }}
         onClick={props.changePage}
       >
-        Create Items
+        New
       </button>
       <button
         name="SORT"
         value={{ arr: "reminders" }}
         onClick={props.changePage}
       >
-        Sort Items
+        Arrange
       </button>
       <button
         name="REMINDERS"
         value={{ arr: "reminders" }}
         onClick={props.changePage}
       >
-        Reminder Wall
+        Reminder
       </button>
       <button
         name="GARBAGE"

@@ -19,7 +19,7 @@ const Table = (props) => {
       return (
         <div>
           <label>
-            Reminder Wall &nbsp;&nbsp;&nbsp; Items: {reminders.length}
+            Reminders &nbsp;&nbsp;&nbsp; Items: {reminders.length}
           </label>
           <table style={{ color: "blue", width: "auto" }}>
             <TableHeader recover="reminders" />
@@ -30,7 +30,7 @@ const Table = (props) => {
               recover="reminders"
             />
           </table>
-          <label>Garbage Wall &nbsp;&nbsp;&nbsp; Items: {deleted.length}</label>
+          <label>Garbage &nbsp;&nbsp;&nbsp; Items: {deleted.length}</label>
 
           <table style={{ color: "blue", width: "auto" }}>
             <TableHeader recover="GARBAGE" />
@@ -48,7 +48,7 @@ const Table = (props) => {
       return (
         <div>
           <label>
-            Reminder Wall &nbsp;&nbsp;&nbsp; Items: {reminders.length}
+            Reminders &nbsp;&nbsp;&nbsp; Items: {reminders.length}
           </label>
           <button onClick={undo}>Undo</button>
           <table style={{ color: "blue", width: "auto" }}>
@@ -60,7 +60,7 @@ const Table = (props) => {
               recover="reminders"
             />
           </table>
-          <label>Garbage Wall &nbsp;&nbsp;&nbsp; Items: {deleted.length}</label>
+          <label>Garbage &nbsp;&nbsp;&nbsp; Items: {deleted.length}</label>
 
           <table style={{ color: "blue", width: "auto" }}>
             <TableHeader recover="GARBAGE" />
@@ -94,7 +94,7 @@ let TableHeader = (props) => {
     return (
       <thead>
         <tr>
-          <th>Recover</th>
+          <th></th>
           <th style={{ textAlign: "center" }}>Type</th>
           <th style={{ textAlign: "center" }}>Description</th>
           <th style={{ textAlign: "center" }}>Published</th>
@@ -131,7 +131,7 @@ let TableBody = (props) => {
             <button
               type="submit"
               onClick={()=>{props.removeCharacter(props.filterArr[index], "recover")}}
-            >?</button>
+            >Restore</button>
           </td>
           <td style={{ textAlign: "center" }}>{row.type}</td>
           <td style={{ textAlign: "center" }}>{row.description}</td>
