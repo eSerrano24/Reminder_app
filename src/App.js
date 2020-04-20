@@ -216,17 +216,22 @@ class App extends Component {
           <h3>Reminder</h3>
           <Nav changePage={this.changePage} />
 
+          <Sort
+            reminders={reminders}
+            sortTable={this.sortTable}
+            undo={this.undo}
+            length={deleted.length}
+            filterExpression={filterExpression}
+            handleFilter={this.handleFilter}
+          />
+
           <label>Garbage &nbsp;&nbsp;&nbsp; Items: {filterArr.length}</label>
           <Table
-            page={page}
-            deleted={deleted}
-            reminders={reminders}
+            page="GARBAGE"
+            length={deleted.length}
             filterArr={filterArr}
             removeCharacter={this.removeCharacter}
             updateReminders={this.updateReminders}
-            selectFilter={this.selectFilter}
-            filterExpression={filterExpression}
-            undo={this.undo}
           />
         </div>
       );
@@ -243,7 +248,7 @@ class App extends Component {
           />
         </div>
       );
-    } else if (page === "SORT") {
+    } else if (page === "SORT") { // exist?
       return (
         <div className="container">
           <h3>Reminder</h3>
@@ -265,20 +270,23 @@ class App extends Component {
             <h3>Reminder</h3>
 
             <Nav changePage={this.changePage} />
+            <Sort
+            reminders={reminders}
+            sortTable={this.sortTable}
+            undo={this.undo}
+            length={deleted.length}
+            filterExpression={filterExpression}
+            handleFilter={this.handleFilter}
+          />
             <label>
-              Reminder Wall &nbsp;&nbsp;&nbsp; Items: {filterArr.length}
+              Reminders &nbsp;&nbsp;&nbsp; Items: {filterArr.length}
             </label>
             <button onClick={this.undo}>Undo</button>
             <Table
               page={page}
-              deleted={deleted}
-              reminders={reminders}
               filterArr={filterArr}
               removeCharacter={this.removeCharacter}
               updateReminders={this.updateReminders}
-              selectFilter={this.selectFilter}
-              filterExpression={filterExpression}
-              undo={this.undo}
             />
           </div>
         );
@@ -288,36 +296,7 @@ class App extends Component {
             <h3>Reminder</h3>
 
             <Nav changePage={this.changePage} />
-            <label>
-              Reminder Wall &nbsp;&nbsp;&nbsp; Items: {filterArr.length}
-            </label>
-            <Table
-              page={page}
-              deleted={deleted}
-              reminders={reminders}
-              filterArr={filterArr}
-              removeCharacter={this.removeCharacter}
-              updateReminders={this.updateReminders}
-              selectFilter={this.selectFilter}
-              filterExpression={filterExpression}
-              undo={this.undo}
-            />
-          </div>
-        );
-      }
-    } else {
-      return (
-        <div className="container">
-          <h3>Reminder</h3>
-          {thisDate.toLocaleString()}
-          <Nav changePage={this.changePage} />
-
-          <Form
-            handleSubmit={this.handleSubmit}
-            updateReminders={this.updateReminders}
-          />
-
-          <Sort
+            <Sort
             reminders={reminders}
             sortTable={this.sortTable}
             undo={this.undo}
@@ -325,18 +304,56 @@ class App extends Component {
             filterExpression={filterExpression}
             handleFilter={this.handleFilter}
           />
+            <label>
+              Reminders &nbsp;&nbsp;&nbsp; Items: {filterArr.length}
+            </label>
+            <Table
+              page={page}
+              filterArr={filterArr}
+              removeCharacter={this.removeCharacter}
+              updateReminders={this.updateReminders}
+            />
+          </div>
+        );
+      }
+    } else {
+      // the HOME page
+      return (
+        <div className="container">
+          <h3>Reminder</h3>
+          {thisDate.toLocaleString()}
+          <Nav changePage={this.changePage} />
 
+          <label>Reminders &nbsp;&nbsp;&nbsp; Items: {reminders.length}</label>
           <Table
-            page={page}
-            deleted={deleted}
-            reminders={reminders}
-            filterArr={filterArr}
+            page="REMINDERS"
+            length={reminders.length}
+            filterArr={this.selectFilter(filterExpression, reminders)}
             removeCharacter={this.removeCharacter}
             updateReminders={this.updateReminders}
-            selectFilter={this.selectFilter}
-            filterExpression={filterExpression}
-            undo={this.undo}
           />
+          <button
+            name="REMINDERS"
+            value={{ arr: "reminders" }}
+            onClick={this.changePage}
+          >
+            Reminders
+          </button>
+          <label>Garbage &nbsp;&nbsp;&nbsp; Items: {deleted.length}</label>
+          <Table
+            page="REMINDERS"
+            length={deleted.length}
+            filterArr={this.selectFilter(filterExpression, deleted)}
+            removeCharacter={this.removeCharacter}
+            updateReminders={this.updateReminders}
+          />
+          <button
+            name="GARBAGE"
+            value={{ arr: "deleted", page: "page" }}
+            onClick={this.changePage}
+          >
+            Garbage
+          </button>
         </div>
       );
     }

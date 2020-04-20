@@ -1,121 +1,44 @@
 import React from "react";
 import EdiText from "react-editext";
 
+/**   
+      
+                <button onClick={undo}>Undo</button>
+*/
+
 let count = 0;
 const Table = (props) => {
-  const {
-    filterArr,
-    reminders,
-    deleted,
-    removeCharacter,
-    updateReminders,
-    page,
-    selectFilter,
-    filterExpression,
-    undo,
-  } = props;
-  if (page === "HOME") {
-    if (deleted.length === 0) {
-      return (
-        <div>
-          <label>
-            Reminders &nbsp;&nbsp;&nbsp; Items: {reminders.length}
-          </label>
-          <table style={{ color: "blue", width: "auto" }}>
-            <TableHeader recover="reminders" />
-            <TableBody
-              removeCharacter={removeCharacter}
-              updateReminders={updateReminders}
-              filterArr={selectFilter(filterExpression, reminders)}
-              recover="reminders"
-            />
-          </table>
-          <label>Garbage &nbsp;&nbsp;&nbsp; Items: {deleted.length}</label>
+  const { filterArr, removeCharacter, updateReminders, page, length } = props;
 
-          <table style={{ color: "blue", width: "auto" }}>
-            <TableHeader recover="GARBAGE" />
-            <TableBody
-              filterArr={selectFilter(filterExpression, deleted)}
-              removeCharacter={removeCharacter}
-              updateReminders={updateReminders}
-              recover="GARBAGE"
-            />
-          </table>
-        </div>
-      );
-    } else { // there is a deleted population
-
-      return (
-        <div>
-          <label>
-            Reminders &nbsp;&nbsp;&nbsp; Items: {reminders.length}
-          </label>
-          <button onClick={undo}>Undo</button>
-          <table style={{ color: "blue", width: "auto" }}>
-            <TableHeader recover="reminders" />
-            <TableBody
-              removeCharacter={removeCharacter}
-              updateReminders={updateReminders}
-              filterArr={selectFilter(filterExpression, reminders)}
-              recover="reminders"
-            />
-          </table>
-          <label>Garbage &nbsp;&nbsp;&nbsp; Items: {deleted.length}</label>
-
-          <table style={{ color: "blue", width: "auto" }}>
-            <TableHeader recover="GARBAGE" />
-            <TableBody
-              filterArr={selectFilter(filterExpression, deleted)}
-              removeCharacter={removeCharacter}
-              updateReminders={updateReminders}
-              recover="GARBAGE"
-            />
-          </table>
-        </div>
-      );
-    } // almost end of home
-  } else {
-    return (
-      <table id="myTable" style={{ color: "blue", width: "auto" }}>
-        <TableHeader recover= {page}/>
-        <TableBody
-          filterArr={filterArr}
-          removeCharacter={removeCharacter}
-          updateReminders={updateReminders}
-          recover={page}
-        />
-      </table>
-    );
-  }
+  return (
+    <table id="myTable" style={{ color: "blue", width: "auto" }}>
+      <TableHeader />
+      <TableBody
+        filterArr={filterArr}
+        removeCharacter={removeCharacter}
+        updateReminders={updateReminders}
+        recover={page}
+        length={length}
+      />
+    </table>
+  );
 };
 
-let TableHeader = (props) => {
-  if (props.recover === "GARBAGE") {
-    return (
-      <thead>
-        <tr>
-          <th></th>
-          <th style={{ textAlign: "center" }}>Type</th>
-          <th style={{ textAlign: "center" }}>Description</th>
-          <th style={{ textAlign: "center" }}>Published</th>
-          <th style={{ textAlign: "center" }}>Deadline</th>
-          <th style={{ textAlign: "center" }}></th>
-        </tr>
-      </thead>
-    );
-  } else {
+let TableHeader = () => {  
     return (
       <thead>
         <tr>
           <th style={{ textAlign: "center" }}>Type</th>
           <th style={{ textAlign: "center" }}>Description</th>
           <th style={{ textAlign: "center" }}>Published</th>
+          <th style={{ textAlign: "center" }}>Payment</th>
+          <th style={{ textAlign: "center" }}>Duration</th>
           <th style={{ textAlign: "center" }}>Deadline</th>
           <th style={{ textAlign: "center" }}></th>
         </tr>
       </thead>
     );
-  }
+  
 };
 
 let TableBody = (props) => {
@@ -124,15 +47,9 @@ let TableBody = (props) => {
       props.updateReminders(val, iP.count);
       // alert("Row: "+iP.count); // -- this alert tells us the row we chose
     };
-    if (props.recover === "GARBAGE") {
+    if (props.recover === "GARBAGE" && isNaN(props.length) === false) {
       return (
         <tr key={index}>
-          <td>
-            <button
-              type="submit"
-              onClick={()=>{props.removeCharacter(props.filterArr[index], "recover")}}
-            >Restore</button>
-          </td>
           <td style={{ textAlign: "center" }}>{row.type}</td>
           <td style={{ textAlign: "center" }}>{row.description}</td>
           <td style={{ textAlign: "center" }}>
@@ -144,6 +61,8 @@ let TableBody = (props) => {
               "-" +
               new Date(row.created).getUTCDate()}
           </td>
+          <td style={{ textAlign: "center" }}>${row.$}</td>
+          <td style={{ textAlign: "center" }}>{row.hours}h:{row.minutes}m</td>
           <td>
             <EdiText //
               type="date"
@@ -160,17 +79,17 @@ let TableBody = (props) => {
           </td>
           <td>
             <button
-              onClick={() =>
-                props.removeCharacter(props.filterArr[index], "delete")
-              }
+              type="submit"
+              onClick={() => {
+                props.removeCharacter(props.filterArr[index], "recover");
+              }}
             >
-              Delete
+              Restore
             </button>
           </td>
         </tr>
       );
     } else {
-
       return (
         <tr key={index}>
           <td style={{ textAlign: "center" }}>{row.type}</td>
@@ -184,6 +103,9 @@ let TableBody = (props) => {
               "-" +
               new Date(row.created).getUTCDate()}
           </td>
+          <td style={{ textAlign: "center" }}>${row.$}</td>
+          <td style={{ textAlign: "center" }}>{row.hours}h:{row.minutes}m</td>
+
           <td>
             <EdiText //
               type="date"
@@ -198,6 +120,7 @@ let TableBody = (props) => {
               }}
             />
           </td>
+
           <td>
             <button
               onClick={() =>

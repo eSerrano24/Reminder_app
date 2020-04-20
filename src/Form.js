@@ -10,8 +10,9 @@ class Form extends Component {
       description: "",
       deadline: null,
       created: new Date().getTime(),
-      $: 0,
-      duration: 0,
+      $: 0.00,
+      hours: 0,
+      minutes: 0,
       website: ''
     };
 
@@ -39,7 +40,7 @@ class Form extends Component {
   };
 
   render() {
-    const { type, description } = this.state;
+    const { type, description, website } = this.state;
     const handleSave = (val) => {
       this.setState({
         deadline: val,
@@ -69,11 +70,11 @@ class Form extends Component {
           placeholder='reminder city'
           required
         />
-        <label>$</label>
-        <input type='number' placeholder='0.00'></input>
+        <label>Payment</label>
+        <input type='number' step='.01' name="$" id="$" placeholder='$0.00' onChange={this.handleChange}></input>
         <label>Duration</label>
-        <input type='number' placeholder='hours'></input>
-        <input type='number' placeholder='minutes'></input>
+        <input type='number' name="hours" id="hours" onChange={this.handleChange} placeholder='hours'></input>
+        <input type='number' name="minutes" id="minutes" onChange={this.handleChange} placeholder='minutes'></input>
         <label>Deadline</label>
         <EdiText //
           type="date"
@@ -81,7 +82,7 @@ class Form extends Component {
           onSave={handleSave}
         />
         <label>Website</label>
-        <input type='text' placeholder='source link'></input>
+        <input type='text' name="website" id="website" value={website} onChange={this.handleChange} placeholder='source link'></input>
         <button type="submit">Post</button>
         {/** add a calender to input the deadline for this form */}
       </form>

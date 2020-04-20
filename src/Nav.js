@@ -18,28 +18,7 @@ const Nav = (props) => {
       >
         New
       </button>
-      <button
-        name="SORT"
-        value={{ arr: "reminders" }}
-        onClick={props.changePage}
-      >
-        Arrange
-      </button>
-      <button
-        name="REMINDERS"
-        value={{ arr: "reminders" }}
-        onClick={props.changePage}
-      >
-        Reminder
-      </button>
-      <button
-        name="GARBAGE"
-        value={{ arr: "deleted", page: "page" }}
-        onClick={props.changePage}
-      >
-        Garbage
-      </button>
-      <button>Settings</button>
+  
     </div>
   );
 };
