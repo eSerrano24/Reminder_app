@@ -10,9 +10,9 @@ class Form extends Component {
       description: "",
       deadline: null,
       created: new Date().getTime(),
-      $: 0.00,
-      hours: 0,
-      minutes: 0,
+      $: '',
+      hours: '',
+      minutes: '',
       website: ''
     };
 
@@ -40,12 +40,15 @@ class Form extends Component {
   };
 
   render() {
-    const { type, description, website } = this.state;
+    const { type, description, website, $, hours, minutes } = this.state;
     const handleSave = (val) => {
       this.setState({
         deadline: val,
       });
       this.initialState.deadline = val;
+      this.initialState.$ = '';
+      this.initialState.hours = '';
+      this.initialState.minutes = '';
     };
 
     return (
@@ -67,14 +70,14 @@ class Form extends Component {
           id="description"
           value={description}
           onChange={this.handleChange}
-          placeholder='reminder city'
+          placeholder='reminder city before 12:00 am'
           required
         />
         <label>Payment</label>
-        <input type='number' step='.01' name="$" id="$" placeholder='$0.00' onChange={this.handleChange}></input>
+        <input type='number' step='.01' name="$" value={$} id="$" placeholder='$0.00' onChange={this.handleChange}></input>
         <label>Duration</label>
-        <input type='number' name="hours" id="hours" onChange={this.handleChange} placeholder='hours'></input>
-        <input type='number' name="minutes" id="minutes" onChange={this.handleChange} placeholder='minutes'></input>
+        <input type='number' name="hours" id="hours" value={hours} onChange={this.handleChange} placeholder='hours'></input>
+        <input type='number' name="minutes" id="minutes" value={minutes} onChange={this.handleChange} placeholder='minutes'></input>
         <label>Deadline</label>
         <EdiText //
           type="date"

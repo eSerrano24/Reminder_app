@@ -47,7 +47,7 @@ let TableBody = (props) => {
       props.updateReminders(val, iP.count);
       // alert("Row: "+iP.count); // -- this alert tells us the row we chose
     };
-    if (props.recover === "GARBAGE" && isNaN(props.length) === false) {
+    if (props.recover === 'HOME') {
       return (
         <tr key={index}>
           <td style={{ textAlign: "center" }}>{row.type}</td>
@@ -62,7 +62,7 @@ let TableBody = (props) => {
               new Date(row.created).getUTCDate()}
           </td>
           <td style={{ textAlign: "center" }}>${row.$}</td>
-          <td style={{ textAlign: "center" }}>{row.hours}h:{row.minutes}m</td>
+          <td style={{ textAlign: "center" }}>{row.hours} h:{row.minutes} m</td>
           <td>
             <EdiText //
               type="date"
@@ -87,9 +87,10 @@ let TableBody = (props) => {
               Restore
             </button>
           </td>
+
         </tr>
       );
-    } else {
+    } else if(props.recover==='GARBAGE'){
       return (
         <tr key={index}>
           <td style={{ textAlign: "center" }}>{row.type}</td>
@@ -104,7 +105,51 @@ let TableBody = (props) => {
               new Date(row.created).getUTCDate()}
           </td>
           <td style={{ textAlign: "center" }}>${row.$}</td>
-          <td style={{ textAlign: "center" }}>{row.hours}h:{row.minutes}m</td>
+          <td style={{ textAlign: "center" }}>{row.hours} h:{row.minutes} m</td>
+          <td>
+            <EdiText //
+              type="date"
+              value={
+                props.filterArr[count].deadline === null
+                  ? ""
+                  : props.filterArr[count].deadline
+              } // bind this with the array (because rows move around)
+              onSave={handleSave}
+              inputProps={{
+                count: count++,
+              }}
+            />
+          </td>
+          <td>
+            <button
+              onClick={() =>
+                props.removeCharacter(props.filterArr[index], "delete")
+              }
+            >
+              Delete
+            </button>
+          </td>
+          <td>
+
+          </td>
+        </tr>
+      );
+    } else { // for reminders
+      return (
+        <tr key={index}>
+          <td style={{ textAlign: "center" }}>{row.type}</td>
+          <td style={{ textAlign: "center" }}>{row.description}</td>
+          <td style={{ textAlign: "center" }}>
+            {new Date(row.created).getUTCFullYear() +
+              "-" +
+              (new Date(row.created).getUTCMonth() > 9
+                ? new Date(row.created).getUTCMonth()
+                : "0" + new Date(row.created).getUTCMonth()) +
+              "-" +
+              new Date(row.created).getUTCDate()}
+          </td>
+          <td style={{ textAlign: "center" }}>${row.$}</td>
+          <td style={{ textAlign: "center" }}>{row.hours} h : {row.minutes} m</td>
 
           <td>
             <EdiText //

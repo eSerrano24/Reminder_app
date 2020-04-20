@@ -214,7 +214,7 @@ class App extends Component {
       return (
         <div className="container">
           <h3>Reminder</h3>
-          <Nav changePage={this.changePage} />
+          <Nav changePage={this.changePage} page={page} />
 
           <Sort
             reminders={reminders}
@@ -240,7 +240,7 @@ class App extends Component {
         <div className="container">
           <h3>Reminder</h3>
 
-          <Nav changePage={this.changePage} />
+          <Nav changePage={this.changePage} page={page} />
 
           <Form
             handleSubmit={this.handleSubmit}
@@ -253,7 +253,7 @@ class App extends Component {
         <div className="container">
           <h3>Reminder</h3>
 
-          <Nav changePage={this.changePage} />
+          <Nav changePage={this.changePage} page={page} />
           <Sort
             reminders={reminders}
             sortTable={this.sortTable}
@@ -269,7 +269,7 @@ class App extends Component {
           <div className="container">
             <h3>Reminder</h3>
 
-            <Nav changePage={this.changePage} />
+            <Nav changePage={this.changePage} page={page} />
             <Sort
             reminders={reminders}
             sortTable={this.sortTable}
@@ -295,7 +295,7 @@ class App extends Component {
           <div className="container">
             <h3>Reminder</h3>
 
-            <Nav changePage={this.changePage} />
+            <Nav changePage={this.changePage} page={page} />
             <Sort
             reminders={reminders}
             sortTable={this.sortTable}
@@ -321,8 +321,8 @@ class App extends Component {
       return (
         <div className="container">
           <h3>Reminder</h3>
-          {thisDate.toLocaleString()}
-          <Nav changePage={this.changePage} />
+  
+          <Nav changePage={this.changePage} page={page} />
 
           <label>Reminders &nbsp;&nbsp;&nbsp; Items: {reminders.length}</label>
           <Table
@@ -341,7 +341,7 @@ class App extends Component {
           </button>
           <label>Garbage &nbsp;&nbsp;&nbsp; Items: {deleted.length}</label>
           <Table
-            page="REMINDERS"
+            page="HOME"
             length={deleted.length}
             filterArr={this.selectFilter(filterExpression, deleted)}
             removeCharacter={this.removeCharacter}
