@@ -11,7 +11,6 @@ class App extends Component {
     filterExpression: "",
     deleted: [],
     page: "HOME",
-    thisDate: new Date(),
   };
 
   removeCharacter = (index, type) => {
@@ -202,14 +201,7 @@ class App extends Component {
   };
 
   render() {
-    let {
-      reminders,
-      filterExpression,
-      filterArr,
-      page,
-      deleted,
-      thisDate,
-    } = this.state;
+    let { reminders, filterExpression, filterArr, page, deleted } = this.state;
     if (page === "GARBAGE") {
       return (
         <div className="container">
@@ -248,40 +240,28 @@ class App extends Component {
           />
         </div>
       );
-    } else if (page === "SORT") { // exist?
-      return (
-        <div className="container">
-          <h3>Reminder</h3>
-
-          <Nav changePage={this.changePage} page={page} />
-          <Sort
-            reminders={reminders}
-            sortTable={this.sortTable}
-            undo={this.undo}
-            filterExpression={filterExpression}
-            handleFilter={this.handleFilter}
-          />
-        </div>
-      );
     } else if (page === "REMINDERS") {
       if (deleted.length > 0) {
+        // show undo button
         return (
           <div className="container">
             <h3>Reminder</h3>
 
             <Nav changePage={this.changePage} page={page} />
             <Sort
-            reminders={reminders}
-            sortTable={this.sortTable}
-            undo={this.undo}
-            length={deleted.length}
-            filterExpression={filterExpression}
-            handleFilter={this.handleFilter}
-          />
+              reminders={reminders}
+              sortTable={this.sortTable}
+              undo={this.undo}
+              length={deleted.length}
+              filterExpression={filterExpression}
+              handleFilter={this.handleFilter}
+            />
             <label>
               Reminders &nbsp;&nbsp;&nbsp; Items: {filterArr.length}
             </label>
+
             <button onClick={this.undo}>Undo</button>
+
             <Table
               page={page}
               filterArr={filterArr}
@@ -292,18 +272,19 @@ class App extends Component {
         );
       } else {
         return (
+          // no undo button reminder
           <div className="container">
             <h3>Reminder</h3>
 
             <Nav changePage={this.changePage} page={page} />
             <Sort
-            reminders={reminders}
-            sortTable={this.sortTable}
-            undo={this.undo}
-            length={deleted.length}
-            filterExpression={filterExpression}
-            handleFilter={this.handleFilter}
-          />
+              reminders={reminders}
+              sortTable={this.sortTable}
+              undo={this.undo}
+              length={deleted.length}
+              filterExpression={filterExpression}
+              handleFilter={this.handleFilter}
+            />
             <label>
               Reminders &nbsp;&nbsp;&nbsp; Items: {filterArr.length}
             </label>
@@ -321,7 +302,7 @@ class App extends Component {
       return (
         <div className="container">
           <h3>Reminder</h3>
-  
+
           <Nav changePage={this.changePage} page={page} />
 
           <label>Reminders &nbsp;&nbsp;&nbsp; Items: {reminders.length}</label>
@@ -332,13 +313,6 @@ class App extends Component {
             removeCharacter={this.removeCharacter}
             updateReminders={this.updateReminders}
           />
-          <button
-            name="REMINDERS"
-            value={{ arr: "reminders" }}
-            onClick={this.changePage}
-          >
-            Reminders
-          </button>
           <label>Garbage &nbsp;&nbsp;&nbsp; Items: {deleted.length}</label>
           <Table
             page="HOME"
@@ -348,11 +322,18 @@ class App extends Component {
             updateReminders={this.updateReminders}
           />
           <button
+            name="REMINDERS"
+            value={{ arr: "reminders" }}
+            onClick={this.changePage}
+          >
+            Reminders items only
+          </button>
+          <button
             name="GARBAGE"
             value={{ arr: "deleted", page: "page" }}
             onClick={this.changePage}
           >
-            Garbage
+            Garbage items only
           </button>
         </div>
       );
