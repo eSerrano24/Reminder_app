@@ -143,13 +143,14 @@ class App extends Component {
   };
 
   changePage = (event) => {
-    const { name, value } = event.target; // name i.e. GARBAGE value.arr == deleted
+    const { name, value } = event.target; // name i.e. GARBAGE value.arr == example. deleted or reminders array (they are really named that)
     const { deleted, reminders } = this.state;
     let obj = [];
 
+    /* this code is for the reminder and garbage buttons, they have a specific filter in effect right after a button is pressed*/
     if (name === "GARBAGE") {
       obj = deleted;
-    } else if (name === "HOME" || name === "REMINDERS") {
+    } else if (name === "REMINDERS" || name === "CALCULATE") {
       obj = reminders;
     }
 
@@ -202,10 +203,18 @@ class App extends Component {
 
   render() {
     let { reminders, filterExpression, filterArr, page, deleted } = this.state;
+    let cost = 0;
+
+    reminders.forEach((val) => {
+      if (!isNaN(val.$)) {
+        cost += parseInt(val.$);
+      }
+    });
+
     if (page === "GARBAGE") {
       return (
         <div className="container">
-          <h3>Reminder</h3>
+          <h3>Garbage</h3>
           <Nav changePage={this.changePage} page={page} />
 
           <Sort
@@ -297,11 +306,21 @@ class App extends Component {
           </div>
         );
       }
+    } else if (page === "CALCULATE") {
+      return (
+        <div className="container">
+          <h3>Calculate</h3>
+          <Nav changePage={this.changePage} page={page} />
+          <h4>Total cost</h4>
+          {cost}
+          <h4>Estimated time total</h4>
+        </div>
+      );
     } else {
       // the HOME page
       return (
         <div className="container">
-          <h3>Reminder</h3>
+          <h3>Home</h3>
 
           <Nav changePage={this.changePage} page={page} />
 
@@ -326,7 +345,7 @@ class App extends Component {
             value={{ arr: "reminders" }}
             onClick={this.changePage}
           >
-            Reminders items only
+            Reminder items only
           </button>
           <button
             name="GARBAGE"
@@ -334,6 +353,13 @@ class App extends Component {
             onClick={this.changePage}
           >
             Garbage items only
+          </button>
+          <button
+            name="CALCULATE"
+            value={{ arr: "reminders" }}
+            onClick={this.changePage}
+          >
+            Calculate
           </button>
         </div>
       );

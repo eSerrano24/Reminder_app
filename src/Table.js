@@ -163,6 +163,7 @@ let TableBody = (props) => {
               inputProps={{
                 count: count++,
               }}
+              submitOnUnfocus={true}
             />
           </td>
 

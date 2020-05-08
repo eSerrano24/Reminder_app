@@ -72,13 +72,6 @@ class Form extends Component {
       this.setState({
         deadline: val,
       });
-      /*
-      this.initialState.deadline = val;
-
-      this.initialState.$ = '';
-      this.initialState.hours = '';
-      this.initialState.minutes = '';
-      */
     };
 
     return (
@@ -139,6 +132,7 @@ class Form extends Component {
           type="date"
           value={deadline === null ? "" : deadline}
           onSave={handleSave}
+          submitOnUnfocus={true}
         />
         <label>Organization website</label>
         <input
