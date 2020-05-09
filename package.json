@@ -9,6 +9,7 @@
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-editext": "^3.15.0",
+    "react-multi-select-component": "^2.0.6",
     "react-scripts": "3.4.0"
   },
   "scripts": {

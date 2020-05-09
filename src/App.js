@@ -207,13 +207,12 @@ class App extends Component {
     let tHours = 0;
     let tMinutes = 0;
     reminders.forEach((val) => {
-        cost += parseInt(val.$);
-        tHours += parseInt(val.hours);
-        tMinutes += parseInt(val.minutes);
+      cost += parseInt(val.$);
+      tHours += parseInt(val.hours);
+      tMinutes += parseInt(val.minutes);
     });
     tHours += Math.floor(tMinutes / 60);
-    tMinutes = (tMinutes % 60);
-
+    tMinutes = tMinutes % 60;
 
     if (page === "GARBAGE") {
       return (
@@ -222,7 +221,6 @@ class App extends Component {
           <Nav changePage={this.changePage} page={page} />
 
           <Sort
-            reminders={reminders}
             sortTable={this.sortTable}
             undo={this.undo}
             length={deleted.length}
@@ -262,7 +260,7 @@ class App extends Component {
 
             <Nav changePage={this.changePage} page={page} />
             <Sort
-              reminders={reminders}
+              table={filterArr}
               sortTable={this.sortTable}
               undo={this.undo}
               length={deleted.length}
@@ -291,7 +289,7 @@ class App extends Component {
 
             <Nav changePage={this.changePage} page={page} />
             <Sort
-              reminders={reminders}
+              table={filterArr}
               sortTable={this.sortTable}
               undo={this.undo}
               length={deleted.length}
@@ -315,9 +313,10 @@ class App extends Component {
         <div className="container">
           <h3>Calculate</h3>
           <Nav changePage={this.changePage} page={page} />
-          <h4>Total cost for '{reminders.length}' reminder items</h4>
-          ${cost}
-          <h4>Estimated total time to complete '{reminders.length}' reminder items</h4>
+          <h4>Total cost for '{reminders.length}' reminder items</h4>${cost}
+          <h4>
+            Estimated total time to complete '{reminders.length}' reminder items
+          </h4>
           {tHours} h : {tMinutes} m
         </div>
       );
