@@ -8,7 +8,7 @@ import EdiText from "react-editext";
 
 let count = 0;
 const Table = (props) => {
-  const { filterArr, removeCharacter, updateReminders, page, length } = props;
+  const { filterArr, removeCharacter, updateItems, page, length } = props;
 
   return (
     <table id="myTable" style={{ color: "blue", width: "auto" }}>
@@ -16,7 +16,7 @@ const Table = (props) => {
       <TableBody
         filterArr={filterArr}
         removeCharacter={removeCharacter}
-        updateReminders={updateReminders}
+        updateItems={updateItems}
         recover={page}
         length={length}
       />
@@ -44,7 +44,7 @@ let TableHeader = () => {
 let TableBody = (props) => {
   const rows = props.filterArr.map((row, index) => {
     const handleSave = (val, iP) => {
-      props.updateReminders(val, iP.count);
+      props.updateItems(val, iP.count);
       // alert("Row: "+iP.count); // -- this alert tells us the row we chose
     };
     if (props.recover === 'HOME') {

@@ -51,7 +51,7 @@ class Form extends Component {
         state.hours = h;
         state.minutes = m;
         state.$ = c;
-        this.props.handleSubmit(state);
+        this.props.formSubmit(state);
       }
     );
 

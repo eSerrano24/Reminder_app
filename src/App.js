@@ -58,7 +58,7 @@ class App extends Component {
   };
 
   // when form is submitted
-  handleSubmit = (character) => {
+  formSubmit = (character) => {
     const arr = [...this.state.reminders, character];
     this.setState({
       reminders: arr,
@@ -79,6 +79,7 @@ class App extends Component {
     });
   };
 
+  // used to filter what tables show
   selectFilter = (value, reminders) => {
     const regEx = new RegExp("^" + value);
     let filter;
@@ -161,6 +162,7 @@ class App extends Component {
     });
   };
 
+  // if delete reminder item on accident
   undo = () => {
     const { reminders, deleted } = this.state;
     if (deleted.length > 0) {
@@ -178,7 +180,8 @@ class App extends Component {
     }
   };
 
-  updateReminders = (deadline, count) => {
+  // deadlines can be updated
+  updateItems = (deadline, count) => {
     const { reminders, deleted, page } = this.state;
 
     if (page === "GARBAGE") {
@@ -221,8 +224,8 @@ class App extends Component {
           <Nav changePage={this.changePage} page={page} />
 
           <Sort
+           table={filterArr}
             sortTable={this.sortTable}
-            undo={this.undo}
             length={deleted.length}
             filterExpression={filterExpression}
             handleFilter={this.handleFilter}
@@ -234,7 +237,7 @@ class App extends Component {
             length={deleted.length}
             filterArr={filterArr}
             removeCharacter={this.removeCharacter}
-            updateReminders={this.updateReminders}
+            updateItems={this.updateItems}
           />
         </div>
       );
@@ -246,8 +249,7 @@ class App extends Component {
           <Nav changePage={this.changePage} page={page} />
 
           <Form
-            handleSubmit={this.handleSubmit}
-            updateReminders={this.updateReminders}
+            formSubmit={this.formSubmit}
           />
         </div>
       );
@@ -262,7 +264,6 @@ class App extends Component {
             <Sort
               table={filterArr}
               sortTable={this.sortTable}
-              undo={this.undo}
               length={deleted.length}
               filterExpression={filterExpression}
               handleFilter={this.handleFilter}
@@ -277,7 +278,7 @@ class App extends Component {
               page={page}
               filterArr={filterArr}
               removeCharacter={this.removeCharacter}
-              updateReminders={this.updateReminders}
+              updateItems={this.updateItems}
             />
           </div>
         );
@@ -291,7 +292,6 @@ class App extends Component {
             <Sort
               table={filterArr}
               sortTable={this.sortTable}
-              undo={this.undo}
               length={deleted.length}
               filterExpression={filterExpression}
               handleFilter={this.handleFilter}
@@ -303,7 +303,7 @@ class App extends Component {
               page={page}
               filterArr={filterArr}
               removeCharacter={this.removeCharacter}
-              updateReminders={this.updateReminders}
+              updateItems={this.updateItems}
             />
           </div>
         );
@@ -334,7 +334,7 @@ class App extends Component {
             length={reminders.length}
             filterArr={this.selectFilter(filterExpression, reminders)}
             removeCharacter={this.removeCharacter}
-            updateReminders={this.updateReminders}
+            updateItems={this.updateItems}
           />
           <label>Garbage &nbsp;&nbsp;&nbsp; Items: {deleted.length}</label>
           <Table
@@ -342,7 +342,7 @@ class App extends Component {
             length={deleted.length}
             filterArr={this.selectFilter(filterExpression, deleted)}
             removeCharacter={this.removeCharacter}
-            updateReminders={this.updateReminders}
+            updateItems={this.updateItems}
           />
           <button
             name="REMINDERS"
