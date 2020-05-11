@@ -7,7 +7,7 @@ const Filter = props => {
     let styles = {};
     return (
         <input
-          type="text"
+          type="search"
           name="filter"
           id="filter"
           value={filterExpression}

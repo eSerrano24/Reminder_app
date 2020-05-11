@@ -1,32 +1,32 @@
-import React, { useState } from "react";
+import React from "react";
 import Filter from "./Filter";
-import MultiSelect from "react-multi-select-component";
+import Dropdown from 'react-dropdown';
+import 'react-dropdown/style.css'
 
 const Sort = (props) => {
-  const [selected, setSelected] = useState([]);
   const filter = [];
-  let found;
-  let dropdown = props.table.map((val, ind) => {
-    found = false;
-    filter.forEach((type) => {
-      console.log("in");
-      if (type === val.type) {
-        console.log("HEY");
+  let choice = '';
+  let dropdown = props.table.filter((val, ind) => {
+    let found = false;
+    filter.forEach((value) => {
+      if (value === val.value) {
         found = true;
       }
     });
     if (found === false) {
-      filter.push(val.type);
-      return { label: val.type, value: val.type };
-    } else {
-      return "";
+      filter.push(val.value);  
     }
+    return found===false; 
   });
-  dropdown = dropdown.filter((val) => {
-    return val !== "";
-  });
-  console.log("dropdown: ");
-  console.log(dropdown);
+ 
+  // can use an if statement to add a show all button
+  // dropdown.unshift({value: "", label: "Choose an option"});
+
+  const changeFilter = (event) => {
+    choice = event.value;
+    props.handleFilter({target: event});
+  }
+
   return (
     <div>
       <label>Sort and Filter</label>
@@ -43,13 +43,7 @@ const Sort = (props) => {
         filterExpression={props.filterExpression}
         handleFilter={props.handleFilter}
       />
-      <MultiSelect
-        options={dropdown}
-        value={selected}
-        onChange={setSelected}
-        labelledBy={"Select"}
-        hasSelectAll={false}
-      />
+    <Dropdown options={dropdown} value={choice} onChange={changeFilter} placeholder='Select an option'/>
     </div>
   );
 };

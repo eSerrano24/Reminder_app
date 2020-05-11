@@ -50,7 +50,7 @@ let TableBody = (props) => {
     if (props.recover === 'HOME') {
       return (
         <tr key={index}>
-          <td style={{ textAlign: "center" }}>{row.type}</td>
+          <td style={{ textAlign: "center" }}>{row.value}</td>
           <td style={{ textAlign: "center" }}>{row.description}</td>
           <td style={{ textAlign: "center" }}>
             {new Date(row.created).getUTCFullYear() +
@@ -93,7 +93,7 @@ let TableBody = (props) => {
     } else if(props.recover==='GARBAGE'){
       return (
         <tr key={index}>
-          <td style={{ textAlign: "center" }}>{row.type}</td>
+          <td style={{ textAlign: "center" }}>{row.value}</td>
           <td style={{ textAlign: "center" }}>{row.description}</td>
           <td style={{ textAlign: "center" }}>
             {new Date(row.created).getUTCFullYear() +
@@ -137,7 +137,7 @@ let TableBody = (props) => {
     } else { // for reminders
       return (
         <tr key={index}>
-          <td style={{ textAlign: "center" }}>{row.type}</td>
+          <td style={{ textAlign: "center" }}>{row.value}</td>
           <td style={{ textAlign: "center" }}>{row.description}</td>
           <td style={{ textAlign: "center" }}>
             {new Date(row.created).getUTCFullYear() +

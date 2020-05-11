@@ -53,8 +53,6 @@ class App extends Component {
       }),
     });
 
-    // must resize table-array after deleting
-    // alert("removing (index obj): "+index);
   };
 
   // when form is submitted
@@ -65,17 +63,17 @@ class App extends Component {
       filterArr: arr,
       filterExpression: "",
     });
-    console.log(arr);
   };
 
   // filter method
   handleFilter = (val) => {
     const { value } = val.target; // filter data
+    const {page, reminders, deleted} = this.state;
     this.setState({ filterExpression: val.target.value });
 
     // if the user has input reminders in the filter
     this.setState({
-      filterArr: this.selectFilter(value, this.state.reminders),
+      filterArr: this.selectFilter(value, (page === 'GARBAGE' ? deleted : reminders )), // reminders only not garbage
     });
   };
 
@@ -85,7 +83,7 @@ class App extends Component {
     let filter;
     if (value !== "") {
       filter = reminders.filter((item) => {
-        return regEx.test(item.type);
+        return regEx.test(item.value);
       });
     } else {
       filter = reminders;
@@ -119,10 +117,10 @@ class App extends Component {
   sortArrs = (returned, items, name) => {
     return [].concat(items).sort(function (a, b) {
       if (name === "alphabetized") {
-        if (a.type.toLowerCase() < b.type.toLowerCase()) {
+        if (a.value.toLowerCase() < b.value.toLowerCase()) {
           returned = -1;
         }
-        if (b.type.toLowerCase() < a.type.toLowerCase()) {
+        if (b.value.toLowerCase() < a.value.toLowerCase()) {
           returned = 1;
         }
         return returned;
@@ -195,8 +193,8 @@ class App extends Component {
     }
   };
 
-  findInd = (type, deadline, count) => {
-    return type.map((val, ind) => {
+  findInd = (table, deadline, count) => {
+    return table.map((val, ind) => {
       if (ind === count) {
         val.deadline = deadline;
       }
@@ -224,7 +222,7 @@ class App extends Component {
           <Nav changePage={this.changePage} page={page} />
 
           <Sort
-           table={filterArr}
+           table={deleted}
             sortTable={this.sortTable}
             length={deleted.length}
             filterExpression={filterExpression}
@@ -262,7 +260,7 @@ class App extends Component {
 
             <Nav changePage={this.changePage} page={page} />
             <Sort
-              table={filterArr}
+              table={reminders}
               sortTable={this.sortTable}
               length={deleted.length}
               filterExpression={filterExpression}
@@ -290,7 +288,7 @@ class App extends Component {
 
             <Nav changePage={this.changePage} page={page} />
             <Sort
-              table={filterArr}
+              table={reminders}
               sortTable={this.sortTable}
               length={deleted.length}
               filterExpression={filterExpression}

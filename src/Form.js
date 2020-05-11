@@ -6,7 +6,7 @@ class Form extends Component {
     super(props);
 
     this.initialState = {
-      type: "",
+      value: "", // must be named value for dropdown
       description: "",
       deadline: null,
       created: new Date().getTime(),
@@ -60,7 +60,7 @@ class Form extends Component {
 
   render() {
     const {
-      type,
+      value,
       description,
       website,
       $,
@@ -79,9 +79,9 @@ class Form extends Component {
         <label>Item type</label>
         <input
           type="text"
-          name="type"
-          id="type"
-          value={type}
+          name="value"
+          id="value"
+          value={value}
           onChange={this.handleChange}
           placeholder="pay bill"
           required
