@@ -5,6 +5,7 @@ const Filter = props => {
     // to concat the input
     const {filterExpression} = props;
     let styles = {};
+
     return (
         <input
           type="search"
@@ -13,7 +14,9 @@ const Filter = props => {
           value={filterExpression}
           onChange={props.handleFilter}
           style = {styles}
-          placeholder = 'Filter by Type'
+          placeholder = 'Search'
+          autocomplete="off"
+          list={props.dropdown}
         />
     )
 }

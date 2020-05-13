@@ -6,6 +6,7 @@ class Form extends Component {
     super(props);
 
     this.initialState = {
+      name: '',
       value: "", // must be named value for dropdown
       description: "",
       deadline: null,
@@ -51,6 +52,7 @@ class Form extends Component {
         state.hours = h;
         state.minutes = m;
         state.$ = c;
+        state.name = state.value;
         this.props.formSubmit(state);
       }
     );
@@ -96,7 +98,7 @@ class Form extends Component {
           placeholder="city of Reminder"
           required
         />
-        <label>Cost</label>
+        <label>Pay</label>
         <input
           type="number"
           step=".01"
@@ -106,7 +108,7 @@ class Form extends Component {
           placeholder="$0.00"
           onChange={this.handleChange}
         ></input>
-        <label>Estimated time to accomplish (hours and minutes)</label>
+        <label>Estimated time it takes to accomplish in hours and minutes</label>
         <input
           type="number"
           name="hours"

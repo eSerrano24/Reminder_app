@@ -1,5 +1,6 @@
 import React from "react";
 import Filter from "./Filter";
+// import {Dropdown} from 'semantic-ui-react';
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css'
 
@@ -9,7 +10,7 @@ const Sort = (props) => {
   let dropdown = props.table.filter((val, ind) => {
     let found = false;
     filter.forEach((value) => {
-      if (value === val.value) {
+      if (value.name === val.value) {
         found = true;
       }
     });
@@ -31,19 +32,20 @@ const Sort = (props) => {
     <div>
       <label>Sort and Filter</label>
       <button name="alphabetized" onClick={props.sortTable}>
-        A-z
+        By alphebetical order
       </button>
       <button name="published" onClick={props.sortTable}>
-        Published
+        By date published
       </button>
       <button name="deadline" onClick={props.sortTable}>
-        Deadline
+        By nearest deadline
       </button>
       <Filter
         filterExpression={props.filterExpression}
         handleFilter={props.handleFilter}
+        dropdown={dropdown}
       />
-    <Dropdown options={dropdown} value={choice} onChange={changeFilter} placeholder='Select an option'/>
+    <Dropdown search options={dropdown} value={choice} onChange={changeFilter} placeholder='All possible options'/>
     </div>
   );
 };

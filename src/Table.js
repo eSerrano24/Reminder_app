@@ -31,9 +31,9 @@ let TableHeader = () => {
           <th style={{ textAlign: "center" }}>Type</th>
           <th style={{ textAlign: "center" }}>Organization</th>
           <th style={{ textAlign: "center" }}>Created on</th>
-          <th style={{ textAlign: "center" }}>Cost</th>
-          <th style={{ textAlign: "center" }}>Time</th>
-          <th style={{ textAlign: "center" }}>Completed by</th>
+          <th style={{ textAlign: "center" }}>Must pay</th>
+          <th style={{ textAlign: "center" }}>Time-length</th>
+          <th style={{ textAlign: "center" }}>Deadline</th>
           <th style={{ textAlign: "center" }}></th>
         </tr>
       </thead>
