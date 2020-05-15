@@ -1,11 +1,33 @@
 import React from "react";
-import Filter from "./Filter";
-// import {Dropdown} from 'semantic-ui-react';
-import Dropdown from 'react-dropdown';
-import 'react-dropdown/style.css'
+import "react-dropdown/style.css";
 
 const Sort = (props) => {
-  const filter = [];
+  if (props.table.length > 1) {
+    return (
+      <div>
+        <label>Sort</label>
+        <button name="published" onClick={props.sortTable}>
+          By date created
+        </button>
+        <button name="deadline" onClick={props.sortTable}>
+          By nearest deadline
+        </button>
+      </div>
+    );
+  } else {
+    return null;
+  }
+};
+
+export default Sort;
+/*
+       <button name="alphabetized" onClick={props.sortTable}>
+        By alphebetical order
+      </button>
+ import Filter from "./Filter";
+import Dropdown from 'react-dropdown';
+
+    const filter = [];
   let choice = '';
   let dropdown = props.table.filter((val, ind) => {
     let found = false;
@@ -19,35 +41,18 @@ const Sort = (props) => {
     }
     return found===false; 
   });
- 
-  // can use an if statement to add a show all button
-  // dropdown.unshift({value: "", label: "Choose an option"});
 
-  const changeFilter = (event) => {
+    const changeFilter = (event) => {
     choice = event.value;
     props.handleFilter({target: event});
   }
-
-  return (
-    <div>
-      <label>Sort and Filter</label>
-      <button name="alphabetized" onClick={props.sortTable}>
-        By alphebetical order
-      </button>
-      <button name="published" onClick={props.sortTable}>
-        By date published
-      </button>
-      <button name="deadline" onClick={props.sortTable}>
-        By nearest deadline
-      </button>
-      <Filter
+ 
+    // can use an if statement to add a show all button
+    // dropdown.unshift({value: "", label: "Choose an option"});
+       <Filter
         filterExpression={props.filterExpression}
         handleFilter={props.handleFilter}
         dropdown={dropdown}
       />
     <Dropdown search options={dropdown} value={choice} onChange={changeFilter} placeholder='All possible options'/>
-    </div>
-  );
-};
-
-export default Sort;
+  */

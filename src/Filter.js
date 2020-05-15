@@ -15,7 +15,7 @@ const Filter = props => {
           onChange={props.handleFilter}
           style = {styles}
           placeholder = 'Search'
-          autocomplete="off"
+          autoComplete="off"
           list={props.dropdown}
         />
     )

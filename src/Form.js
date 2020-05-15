@@ -6,15 +6,11 @@ class Form extends Component {
     super(props);
 
     this.initialState = {
-      name: '',
+      name: "",
       value: "", // must be named value for dropdown
       description: "",
-      deadline: null,
+      deadline: "",
       created: new Date().getTime(),
-      $: "",
-      hours: "",
-      minutes: "",
-      website: "",
     };
 
     this.state = this.initialState;
@@ -29,34 +25,7 @@ class Form extends Component {
 
   onFormSubmit = (event) => {
     event.preventDefault();
-    let state = this.state;
-    const { hours, minutes, $ } = this.state;
-    if (this.initialState.deadline === null) {
-      const date = new Date("").toUTCString();
-      this.setState({
-        deadline: date,
-      });
-    }
-    this.initialState.deadline = "";
-
-    let h = hours === "" ? 0 : hours;
-    let m = minutes === "" ? 0 : minutes;
-    let c = $ === "" ? 0 : $;
-    this.setState(
-      {
-        hours: h,
-        minutes: m,
-        $: c,
-      },
-      () => {
-        state.hours = h;
-        state.minutes = m;
-        state.$ = c;
-        state.name = state.value;
-        this.props.formSubmit(state);
-      }
-    );
-
+    this.props.formSubmit(this.state);
     this.setState(this.initialState);
   };
 
@@ -64,18 +33,13 @@ class Form extends Component {
     const {
       value,
       description,
-      website,
-      $,
-      hours,
-      minutes,
       deadline,
     } = this.state;
-    const handleSave = (val) => {
+    const handleDeadline = (val) => {
       this.setState({
-        deadline: val,
+        deadline: val
       });
     };
-
     return (
       <form onSubmit={this.onFormSubmit}>
         <label>Item type</label>
@@ -98,53 +62,13 @@ class Form extends Component {
           placeholder="city of Reminder"
           required
         />
-        <label>Pay</label>
-        <input
-          type="number"
-          step=".01"
-          name="$"
-          value={$}
-          id="$"
-          placeholder="$0.00"
-          onChange={this.handleChange}
-        ></input>
-        <label>Estimated time it takes to accomplish in hours and minutes</label>
-        <input
-          type="number"
-          name="hours"
-          id="hours"
-          value={hours}
-          min="0"
-          max="24"
-          onChange={this.handleChange}
-          placeholder="numbers only - in hours"
-        ></input>
-        <input
-          type="number"
-          name="minutes"
-          id="minutes"
-          value={minutes}
-          min="0"
-          max="59"
-          onChange={this.handleChange}
-          placeholder="numbers only - in minutes"
-        ></input>
         <label>Must be completed by</label>
-        <EdiText //
+        <EdiText
           type="date"
           value={deadline === null ? "" : deadline}
-          onSave={handleSave}
+          onSave={handleDeadline}
           submitOnUnfocus={true}
         />
-        <label>Organization website</label>
-        <input
-          type="text"
-          name="website"
-          id="website"
-          value={website}
-          onChange={this.handleChange}
-          placeholder="source link"
-        ></input>
         <button type="submit">Post</button>
         {/** add a calender to input the deadline for this form */}
       </form>

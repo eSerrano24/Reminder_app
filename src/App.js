@@ -52,7 +52,6 @@ class App extends Component {
         return val !== index;
       }),
     });
-
   };
 
   // when form is submitted
@@ -68,12 +67,15 @@ class App extends Component {
   // filter method
   handleFilter = (val) => {
     const { value } = val.target; // filter data
-    const {page, reminders, deleted} = this.state;
+    const { page, reminders, deleted } = this.state;
     this.setState({ filterExpression: val.target.value });
 
     // if the user has input reminders in the filter
     this.setState({
-      filterArr: this.selectFilter(value, (page === 'GARBAGE' ? deleted : reminders )), // reminders only not garbage
+      filterArr: this.selectFilter(
+        value,
+        page === "GARBAGE" ? deleted : reminders
+      ), // reminders only not garbage
     });
   };
 
@@ -204,16 +206,6 @@ class App extends Component {
 
   render() {
     let { reminders, filterExpression, filterArr, page, deleted } = this.state;
-    let cost = 0;
-    let tHours = 0;
-    let tMinutes = 0;
-    reminders.forEach((val) => {
-      cost += parseInt(val.$);
-      tHours += parseInt(val.hours);
-      tMinutes += parseInt(val.minutes);
-    });
-    tHours += Math.floor(tMinutes / 60);
-    tMinutes = tMinutes % 60;
 
     if (page === "GARBAGE") {
       return (
@@ -222,14 +214,12 @@ class App extends Component {
           <Nav changePage={this.changePage} page={page} />
 
           <Sort
-           table={deleted}
-            sortTable={this.sortTable}
-            length={deleted.length}
+            table={deleted}
+            sortTable={this.sortTable} 
             filterExpression={filterExpression}
             handleFilter={this.handleFilter}
           />
 
-          <label>Garbage &nbsp;&nbsp;&nbsp; Items: {filterArr.length}</label>
           <Table
             page="GARBAGE"
             length={deleted.length}
@@ -246,9 +236,7 @@ class App extends Component {
 
           <Nav changePage={this.changePage} page={page} />
 
-          <Form
-            formSubmit={this.formSubmit}
-          />
+          <Form formSubmit={this.formSubmit} />
         </div>
       );
     } else if (page === "REMINDERS") {
@@ -262,13 +250,9 @@ class App extends Component {
             <Sort
               table={reminders}
               sortTable={this.sortTable}
-              length={deleted.length}
               filterExpression={filterExpression}
               handleFilter={this.handleFilter}
             />
-            <label>
-              Reminders &nbsp;&nbsp;&nbsp; Items: {filterArr.length}
-            </label>
 
             <button onClick={this.undo}>Undo</button>
 
@@ -277,6 +261,7 @@ class App extends Component {
               filterArr={filterArr}
               removeCharacter={this.removeCharacter}
               updateItems={this.updateItems}
+              length={reminders.length}
             />
           </div>
         );
@@ -290,81 +275,117 @@ class App extends Component {
             <Sort
               table={reminders}
               sortTable={this.sortTable}
-              length={deleted.length}
               filterExpression={filterExpression}
               handleFilter={this.handleFilter}
             />
-            <label>
-              Reminders &nbsp;&nbsp;&nbsp; Items: {filterArr.length}
-            </label>
+
             <Table
               page={page}
               filterArr={filterArr}
               removeCharacter={this.removeCharacter}
               updateItems={this.updateItems}
+              length={reminders.length}
             />
           </div>
         );
       }
-    } else if (page === "CALCULATE") {
-      return (
-        <div className="container">
-          <h3>Calculate</h3>
-          <Nav changePage={this.changePage} page={page} />
-          <h4>Total cost for '{reminders.length}' reminder items</h4>${cost}
-          <h4>
-            Estimated total time to complete '{reminders.length}' reminder items
-          </h4>
-          {tHours} h : {tMinutes} m
-        </div>
-      );
     } else {
       // the HOME page
-      return (
-        <div className="container">
-          <h3>Home</h3>
+      if (reminders.length > 0 && deleted.length > 0) {
+        return (
+          <div className="container">
+            <h3>Home</h3>
 
-          <Nav changePage={this.changePage} page={page} />
+            <Nav changePage={this.changePage} page={page} />
 
-          <label>Reminders &nbsp;&nbsp;&nbsp; Items: {reminders.length}</label>
-          <Table
-            page="REMINDERS"
-            length={reminders.length}
-            filterArr={this.selectFilter(filterExpression, reminders)}
-            removeCharacter={this.removeCharacter}
-            updateItems={this.updateItems}
-          />
-          <label>Garbage &nbsp;&nbsp;&nbsp; Items: {deleted.length}</label>
-          <Table
-            page="HOME"
-            length={deleted.length}
-            filterArr={this.selectFilter(filterExpression, deleted)}
-            removeCharacter={this.removeCharacter}
-            updateItems={this.updateItems}
-          />
-          <button
-            name="REMINDERS"
-            value={{ arr: "reminders" }}
-            onClick={this.changePage}
-          >
-            Reminder items only
-          </button>
-          <button
-            name="GARBAGE"
-            value={{ arr: "deleted", page: "page" }}
-            onClick={this.changePage}
-          >
-            Garbage items only
-          </button>
-          <button
-            name="CALCULATE"
-            value={{ arr: "reminders" }}
-            onClick={this.changePage}
-          >
-            Calculate
-          </button>
-        </div>
-      );
+            <Table
+              page="REMINDERS"
+              length={reminders.length}
+              filterArr={this.selectFilter(filterExpression, reminders)}
+              removeCharacter={this.removeCharacter}
+              updateItems={this.updateItems}
+            />
+
+            <Table
+              page="HOME"
+              length={deleted.length}
+              filterArr={this.selectFilter(filterExpression, deleted)}
+              removeCharacter={this.removeCharacter}
+              updateItems={this.updateItems}
+            />
+            <button
+              name="REMINDERS"
+              value={{ arr: "reminders" }}
+              onClick={this.changePage}
+            >
+              Reminder items
+            </button>
+            <button
+              name="GARBAGE"
+              value={{ arr: "deleted", page: "page" }}
+              onClick={this.changePage}
+            >
+              Garbage items
+            </button>
+          </div>
+        );
+      } else if (reminders.length > 0) {
+        return (
+          <div className="container">
+            <h3>Home</h3>
+
+            <Nav changePage={this.changePage} page={page} />
+
+            <Table
+              page="REMINDERS"
+              length={reminders.length}
+              filterArr={this.selectFilter(filterExpression, reminders)}
+              removeCharacter={this.removeCharacter}
+              updateItems={this.updateItems}
+            />
+
+            <button
+              name="REMINDERS"
+              value={{ arr: "reminders" }}
+              onClick={this.changePage}
+            >
+              Reminder items
+            </button>
+          </div>
+        );
+      } else if (deleted.length > 0) {
+        return (
+          <div className="container">
+            <h3>Home</h3>
+
+            <Nav changePage={this.changePage} page={page} />
+
+            <Table
+              page="HOME"
+              length={deleted.length}
+              filterArr={this.selectFilter(filterExpression, deleted)}
+              removeCharacter={this.removeCharacter}
+              updateItems={this.updateItems}
+            />
+
+            <button
+              name="GARBAGE"
+              value={{ arr: "deleted", page: "page" }}
+              onClick={this.changePage}
+            >
+              Garbage items
+            </button>
+          </div>
+        );
+      } else {
+        return (
+          <div className="container">
+            <h3>Home</h3>
+
+            <Nav changePage={this.changePage} page={page} />
+          </div>
+        );
+      }
     }
   }
 }
