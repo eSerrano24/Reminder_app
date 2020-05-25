@@ -1,5 +1,5 @@
 import React from "react";
-import "react-dropdown/style.css";
+// import "react-dropdown/style.css";
 
 const Sort = (props) => {
   if (props.table.length > 1) {
